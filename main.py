@@ -331,79 +331,79 @@ if decode_button_rsa:
     st.success("".join([chr(c) for c in decode_message_ascii_rsa]))
 
 with st.expander("Aufgaben Modulo"):
-    st.text("""
-# 1. Aufgaben:
-# a) 27 mod 4
+    st.write(r"""
+1. Aufgaben:
+a) 27 mod 4
 print(27 % 4) # 4 * 6 + 3 = 27
 
-# b) 26 mod 5
+b) 26 mod 5
 print(26 % 5) # 5 * 5 + 1 = 26
 
-# c) 18 mod 3
+c) 18 mod 3
 print(18 % 3) # 3 * 6 + 0 = 18
 
-# g) 100037 mod 10
+g) 100037 mod 10
 print(100037 % 10) # 10 * 10003 + 7 = 100037
 
-# 2. Aufgaben:
-# a) sei k eine gerade Zahl. Berechne k mod 2.
+2. Aufgaben:
+a) sei k eine gerade Zahl. Berechne k mod 2.
 print(2 % 2) # 2 * 1 + 0 = 2
 print(4 % 2) # 2 * 2 + 0 = 4
-# Eine gerade Zahl ist per Definition durch 2 teilbar. Daher ist der Rest 0.
+Eine gerade Zahl ist per Definition durch 2 teilbar. Daher ist der Rest 0.
 
-# b) sei k eine ungerade Zahl. Berechne k mod 2.
+b) sei k eine ungerade Zahl. Berechne k mod 2.
 print(1 % 2) # 2 * 0 + 1 = 1
 print(3 % 2) # 2 * 1 + 1 = 3
-# Eine ungerade Zahl ist per Definition nicht durch 2 teilbar. Daher ist der Rest 1.
+Eine ungerade Zahl ist per Definition nicht durch 2 teilbar. Daher ist der Rest 1.
 
-# 3. Aufgaben:
-# a) Vergleiche  25 mod 4  und  (20 mod 4 + 5 mod 4) mod 4
+3. Aufgaben:
+a) Vergleiche  25 mod 4  und  (20 mod 4 + 5 mod 4) mod 4
 print(25 % 4, (20 % 4 + 5 % 4) % 4) # 1, 1
 
-# b) Vergleiche  25 mod 4  und  (19 mod 4 + 6 mod 4) mod 4
+b) Vergleiche  25 mod 4  und  (19 mod 4 + 6 mod 4) mod 4
 print(25 % 4, (19 % 4 + 6 % 4) % 4) # 1, 1
 
-# c) Vergleiche  26 mod 4  und  (2 mod 4·13 mod 4) mod 4
+c) Vergleiche  26 mod 4  und  (2 mod 4·13 mod 4) mod 4
 print(26 % 4, (2 % 4 * 13 % 4) % 4) # 2, 2
 
-# d) Vergleiche  7**3 mod 4  und  (7 mod 4)**3 mod 4
+d) Vergleiche  7**3 mod 4  und  (7 mod 4)**3 mod 4
 print(7**3 % 4, (7 % 4)**3 % 4) # 3, 3
 
-### Regeln
-# (a + b) mod m = (a mod m + b mod m) mod m
-print((25 + 12) % 4, (25 % 4 + 12 % 4) % 4) # 1, 1
-# (a - b) mod m = (a mod m - b mod m) mod m
-print((25 - 12) % 4, (25 % 4 - 12 % 4) % 4) # 1, 1
-# (a * b) mod m = (a mod m * b mod m) mod m
-print((25 * 12) % 4, (25 % 4 * 12 % 4) % 4) # 0, 0
-# (a ** b) mod m = (a mod m) ** b mod m
+Regeln
+(a + b) mod m = (a mod m + b mod m) mod m\
+print((25 + 12) % 4, (25 % 4 + 12 % 4) % 4) # 1, 1\
+(a - b) mod m = (a mod m - b mod m) mod m\
+print((25 - 12) % 4, (25 % 4 - 12 % 4) % 4) # 1, 1\
+(a * b) mod m = (a mod m * b mod m) mod m\
+print((25 * 12) % 4, (25 % 4 * 12 % 4) % 4) # 0, 0\
+(a ** b) mod m = (a mod m) ** b mod m\
 print((25 ** 12) % 4, (25 % 4) ** 12 % 4) # 1, 1
 
-# 4. Aufgaben:
-# a) Es sei n irgendeine natürliche Zahl, die mit den Ziffern ...34 endet. Berechne n mod 4
+4. Aufgaben:
+a) Es sei n irgendeine natürliche Zahl, die mit den Ziffern ...34 endet. Berechne n mod 4
 print(34 % 4, (12100 + 34) % 4) # 2
-# b) Wie kann man leicht überprüfen, ob eine Zahl durch 4 teilbar ist?
-# n mod 4 != 0
+b) Wie kann man leicht überprüfen, ob eine Zahl durch 4 teilbar ist?
+n mod 4 != 0
 print(24 % 4)
 
-# 5. Aufgaben
-# Es ist 10 Uhr am Vormittag (Mittwoch) und du hast in 50 Stunden einen Terminbeim Zahnarzt und in 70 Stunden einen Computerkurs. Wann finden die Terminestatt?
+5. Aufgaben
+Es ist 10 Uhr am Vormittag (Mittwoch) und du hast in 50 Stunden einen Terminbeim Zahnarzt und in 70 Stunden einen Computerkurs. Wann finden die Terminestatt?
 print((10 + 50) % 24, (10 + 70) % 24) # 12, 8
-# Der Zahnarzttermin ist am Freitag um 12 Uhr und der Computerkurs am Samstag um 8 Uhr.
+Der Zahnarzttermin ist am Freitag um 12 Uhr und der Computerkurs am Samstag um 8 Uhr.
         """
     )
 
 with st.expander("Aufgaben Restklassen"):
-    st.text("""
-# Restklassen
-# [a]m = {b aus Z | es existiert K aus Z für das gilt: b = k * m + a} = {b | b identisch mit a mod m}
-# Die Restklasse einer ganzen Zahlamodulo einer Zahlmist die Menge all derZahlen, die bei Division durchmdenselben (positiven)Restlassenwiea. Die Restklassevonamodulombezeichnet man als [a]m, und es gilt
+    st.write(r"""
+Restklassen
+[a]m = {b aus Z | es existiert K aus Z für das gilt: b = k * m + a} = {b | b identisch mit a mod m}
+Die Restklasse einer ganzen Zahlamodulo einer Zahlmist die Menge all derZahlen, die bei Division durchmdenselben (positiven)Restlassenwiea. Die Restklassevonamodulombezeichnet man als [a]m, und es gilt
 
-# Aufgaben 1.
-# a) Versuche die obige Tabelle in Worte zu fassen.
-# Die Tabelle zeigt die Restklassen modulo 6
+Aufgaben 1.
+a) Versuche die obige Tabelle in Worte zu fassen.
+Die Tabelle zeigt die Restklassen modulo 6
 
-# b) Fertige eine entsprechende Tabelle für m = 5 an.
+b) Fertige eine entsprechende Tabelle für m = 5 an.
     """)
 
     st.dataframe(
@@ -419,41 +419,41 @@ with st.expander("Aufgaben Restklassen"):
         )
     )
 
-    st.text("""
-# # c) Bestimme [0]3,[1]3 und [1]4.
-# # [0]3 = [:, -6, -3, 0, 3, 6, :]
-# # [1]3 = {b aus Z | es gibt K aus Z mit b = k * 3 + 1} = [:, -5, -2, 1, 4, 7, :]
-# # [1]4 = [:, -7, -3, 1, 5, 9, :]
+    st.write("""
+c) Bestimme [0]3,[1]3 und [1]4.
+[0]3 = [:, -6, -3, 0, 3, 6, :]
+[1]3 = {b aus Z | es gibt K aus Z mit b = k * 3 + 1} = [:, -5, -2, 1, 4, 7, :]
+[1]4 = [:, -7, -3, 1, 5, 9, :]
 
-# # d) Gib drei verschiedene Repräsentanten der Restklassen [3]7 und [2]8 an.
-# # [3]7 = [:, -11, 3, 10, :]
-# # [2]8 = [:, -10, 2, 10, :]
+d) Gib drei verschiedene Repräsentanten der Restklassen [3]7 und [2]8 an.
+[3]7 = [:, -11, 3, 10, :]
+[2]8 = [:, -10, 2, 10, :]
 
-# # e) Kennst Du Anwendungen von Restklassen im täglichen Leben?
-# # Uhrzeit, Wochentage, Kalender, ...
+e) Kennst Du Anwendungen von Restklassen im täglichen Leben?
+Uhrzeit, Wochentage, Kalender, ...
 
 1. Zeige, dass für alle Repräsentanten a aus [4]7 und b aus [5]7 gilt: a+b aus [2]7. Benutze dafür, dass sich a und b schreiben lassen als a=7·k1+4 und b=7·k2+5 mit ganzen Zahlen k1 und k2 und ermittle, welchen Rest a+b bei Division durch 7 hat.
-# [4]7 = [:, -3, 4, 11, :]
-# [5]7 = [:, -2, 5, 12, :]
-# (4 + 5) % 7 = 9 % 7 = 2
+[4]7 = [:, -3, 4, 11, :]
+[5]7 = [:, -2, 5, 12, :]
+(4 + 5) % 7 = 9 % 7 = 2
 
-# [2]7 = [:, -5, 2, 9, :]
-# Für a gilt: a = 7 * k1 + 4
-# Für b gilt: b = 7 * k2 + 5
-# Für a + b gilt: a + b = (7 * k1 + 4) + (7 * k2 + 5) = 7 * (k1 + k2) + 9 = 7 * k3 + (9 % 7) = 7 * k3 + 2 mit k3 = k1 + k2
+[2]7 = [:, -5, 2, 9, :]
+Für a gilt: a = 7 * k1 + 4
+Für b gilt: b = 7 * k2 + 5
+Für a + b gilt: a + b = (7 * k1 + 4) + (7 * k2 + 5) = 7 * (k1 + k2) + 9 = 7 * k3 + (9 % 7) = 7 * k3 + 2 mit k3 = k1 + k2
 
 2. Zeige, dass für alle Repräsentanten a aus [4]7 und b aus [5]7 gilt: a·b aus [6]7. Benutze dafür, dass sich a und b schreiben lassen als a=7·k1+4 und b=7·k2+5 mit ganzen Zahlen k1 und k2 und ermittle, welchen Rest a·b bei Division durch 7 hat.
-# [4]7 = [:, -3, 4, 11, :]
-# [5]7 = [:, -2, 5, 12, :]
-# (4 * 5) % 7 = 20 % 7 = 6
+[4]7 = [:, -3, 4, 11, :]
+[5]7 = [:, -2, 5, 12, :]
+(4 * 5) % 7 = 20 % 7 = 6
 
-# [6]7 = [:, -1, 6, 13, :]
-# Für a gilt: a = 7 * k1 + 4
-# Für b gilt: b = 7 * k2 + 5
-# Für a * b gilt: 
-#   a * b = (7 * k1 + 4) * (7 * k2 + 5) = 49 * k1 * k2 + 35 * k1 + 28 * k2 + 20 
-#         = 49 * k3 + 35 * k1 + 28 * k2 + 20 = 7 * (7 * k3 + 5 * k1 + 4 * k2) + 20 | mit k3 = k1 * k2
-#         = 7 * k4 + (20 % 7) = 7 * k4 + 6 mit k4 = 7 * k3 + 5 * k1 + 4 * k2    
+[6]7 = [:, -1, 6, 13, :]
+Für a gilt: a = 7 * k1 + 4
+Für b gilt: b = 7 * k2 + 5
+Für a * b gilt: 
+a * b = (7 * k1 + 4) * (7 * k2 + 5) = 49 * k1 * k2 + 35 * k1 + 28 * k2 + 20 
+     = 49 * k3 + 35 * k1 + 28 * k2 + 20 = 7 * (7 * k3 + 5 * k1 + 4 * k2) + 20 | mit k3 = k1 * k2
+     = 7 * k4 + (20 % 7) = 7 * k4 + 6 mit k4 = 7 * k3 + 5 * k1 + 4 * k2    
 
 3. Leicht darstellen kann man Addition und Multiplikation von Restklassen mit Tabellen. Wenn aus dem Zusammenhang klar ist, welche Restklassen man betrachtet, kann man die Symbole [ ]m auch weglassen.
 
@@ -484,7 +484,7 @@ a) Zeige, dass für die Restklassen modulo 3 folgende Additions- und Multiplikat
         )
     )
 
-    st.text("""
+    st.write("""
     b) Ermittle Additions- und Multiplikationstabelle für die Restklassen modulo 6.
     """)
 
@@ -511,7 +511,7 @@ a) Zeige, dass für die Restklassen modulo 3 folgende Additions- und Multiplikat
     )
 
 with st.expander("Modulares Potenzieren"):
-    st.text("""
+    st.write("""
     (a·b) mod m = (a mod m·b mod m) mod m
     (a**b) mod m = (a mod m)**b mod m
 
