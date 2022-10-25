@@ -332,63 +332,60 @@ if decode_button_rsa:
 
 with st.expander("Aufgaben Modulo"):
     st.write(r"""
-1. Aufgaben:
-a) 27 mod 4
-print(27 % 4) # 4 * 6 + 3 = 27
+#### Aufgabe 1:
+a) 27 mod 4 = 3 | print(27 % 4) $\rightarrow$ 4 * 6 + 3 = 27\
+b) 26 mod 5 = 1 | print(26 % 5) $\rightarrow$ 5 * 5 + 1 = 26\
+c) 18 mod 3 = 0 | print(18 % 3) $\rightarrow$ 3 * 6 + 0 = 18\
+g) 100037 mod 10 = 7 | print(100037 % 10) $\rightarrow$ 10 * 10003 + 7 = 100037
 
-b) 26 mod 5
-print(26 % 5) # 5 * 5 + 1 = 26
+#### Aufgabe 2:
+a) sei k eine gerade Zahl. Berechne k mod 2\
+2 % 2 = 0 $\rightarrow$ 2 * 1 + 0 = 2\
+4 % 2 = 0 $\rightarrow$ 2 * 2 + 0 = 4
+###### Eine gerade Zahl ist per Definition durch 2 teilbar. Daher ist der Rest 0.
 
-c) 18 mod 3
-print(18 % 3) # 3 * 6 + 0 = 18
+b) sei k eine ungerade Zahl. Berechne k mod 2.\
+1 % 2 = 1 $\rightarrow$ 2 * 0 + 1 = 1\
+3 % 2 = 1 $\rightarrow$ 2 * 1 + 1 = 3
+###### Eine ungerade Zahl ist per Definition nicht durch 2 teilbar. Daher ist der Rest 1.
 
-g) 100037 mod 10
-print(100037 % 10) # 10 * 10003 + 7 = 100037
+#### Aufgabe 3:
+a) Vergleiche  25 mod 4  und  (20 mod 4 + 5 mod 4) mod 4\
+print(25 % 4, (20 % 4 + 5 % 4) % 4) $\rightarrow$ 1, 1
 
-2. Aufgaben:
-a) sei k eine gerade Zahl. Berechne k mod 2.
-print(2 % 2) # 2 * 1 + 0 = 2
-print(4 % 2) # 2 * 2 + 0 = 4
-Eine gerade Zahl ist per Definition durch 2 teilbar. Daher ist der Rest 0.
+b) Vergleiche  25 mod 4  und  (19 mod 4 + 6 mod 4) mod 4\
+print(25 % 4, (19 % 4 + 6 % 4) % 4) $\rightarrow$ 1, 1
 
-b) sei k eine ungerade Zahl. Berechne k mod 2.
-print(1 % 2) # 2 * 0 + 1 = 1
-print(3 % 2) # 2 * 1 + 1 = 3
-Eine ungerade Zahl ist per Definition nicht durch 2 teilbar. Daher ist der Rest 1.
+c) Vergleiche  26 mod 4  und  (2 mod 4·13 mod 4) mod 4\
+print(26 % 4, (2 % 4 * 13 % 4) % 4) $\rightarrow$ 2, 2
 
-3. Aufgaben:
-a) Vergleiche  25 mod 4  und  (20 mod 4 + 5 mod 4) mod 4
-print(25 % 4, (20 % 4 + 5 % 4) % 4) # 1, 1
+d) Vergleiche  7**3 mod 4  und  (7 mod 4)**3 mod 4\
+print(7 ** 3 % 4, (7 % 4) ** 3 % 4) $\rightarrow$ 3, 3
 
-b) Vergleiche  25 mod 4  und  (19 mod 4 + 6 mod 4) mod 4
-print(25 % 4, (19 % 4 + 6 % 4) % 4) # 1, 1
-
-c) Vergleiche  26 mod 4  und  (2 mod 4·13 mod 4) mod 4
-print(26 % 4, (2 % 4 * 13 % 4) % 4) # 2, 2
-
-d) Vergleiche  7**3 mod 4  und  (7 mod 4)**3 mod 4
-print(7**3 % 4, (7 % 4)**3 % 4) # 3, 3
-
-Regeln
+#### Regeln
 (a + b) mod m = (a mod m + b mod m) mod m\
-print((25 + 12) % 4, (25 % 4 + 12 % 4) % 4) # 1, 1\
+print((25 + 12) % 4, (25 % 4 + 12 % 4) % 4) $\rightarrow$ 1, 1
+
 (a - b) mod m = (a mod m - b mod m) mod m\
-print((25 - 12) % 4, (25 % 4 - 12 % 4) % 4) # 1, 1\
+print((25 - 12) % 4, (25 % 4 - 12 % 4) % 4) $\rightarrow$ 1, 1
+
 (a * b) mod m = (a mod m * b mod m) mod m\
-print((25 * 12) % 4, (25 % 4 * 12 % 4) % 4) # 0, 0\
+print((25 * 12) % 4, (25 % 4 * 12 % 4) % 4) $\rightarrow$ 0, 0
+
 (a ** b) mod m = (a mod m) ** b mod m\
-print((25 ** 12) % 4, (25 % 4) ** 12 % 4) # 1, 1
+print((25 ** 12) % 4, (25 % 4) ** 12 % 4) $\rightarrow$ 1, 1
 
-4. Aufgaben:
-a) Es sei n irgendeine natürliche Zahl, die mit den Ziffern ...34 endet. Berechne n mod 4
-print(34 % 4, (12100 + 34) % 4) # 2
-b) Wie kann man leicht überprüfen, ob eine Zahl durch 4 teilbar ist?
-n mod 4 != 0
-print(24 % 4)
+#### Aufgabe 4:
+a) Es sei n irgendeine natürliche Zahl, die mit den Ziffern ...34 endet. Berechne n mod 4\
+print(34 % 4, (12100 + 34) % 4) $\rightarrow$ 2
 
-5. Aufgaben
+b) Wie kann man leicht überprüfen, ob eine Zahl durch 4 teilbar ist?\
+Die Zahl n ist durch 4 teilbar, wenn die letzte Ziffer 0, 4, 8 oder 2 ist.\
+Der Modulo Rest ist dann 0. $\rightarrow$ n mod 4 != 0 | z.B. print(24 % 4)
+
+#### Aufgabe 5:
 Es ist 10 Uhr am Vormittag (Mittwoch) und du hast in 50 Stunden einen Terminbeim Zahnarzt und in 70 Stunden einen Computerkurs. Wann finden die Terminestatt?
-print((10 + 50) % 24, (10 + 70) % 24) # 12, 8
+print((10 + 50) % 24, (10 + 70) % 24) $\rightarrow$ 12, 8\
 Der Zahnarzttermin ist am Freitag um 12 Uhr und der Computerkurs am Samstag um 8 Uhr.
         """
     )
@@ -396,12 +393,14 @@ Der Zahnarzttermin ist am Freitag um 12 Uhr und der Computerkurs am Samstag um 8
 with st.expander("Aufgaben Restklassen"):
     st.write(r"""
 Restklassen
-[a]m = {b aus Z | es existiert K aus Z für das gilt: b = k * m + a} = {b | b identisch mit a mod m}
-Die Restklasse einer ganzen Zahlamodulo einer Zahlmist die Menge all derZahlen, die bei Division durchmdenselben (positiven)Restlassenwiea. Die Restklassevonamodulombezeichnet man als [a]m, und es gilt
+[a]m = {b aus Z | es existiert K aus Z für das gilt: b = k * m + a} = {b | b identisch mit a mod m}\
+Die Restklasse einer ganzen Zahl a modulo einer Zahl m ist die Menge all der Zahlen, die bei Division durch denselben (positiven)
 
-Aufgaben 1.
-a) Versuche die obige Tabelle in Worte zu fassen.
-Die Tabelle zeigt die Restklassen modulo 6
+#### Aufgabe 1:
+a) Versuche die obige Tabelle in Worte zu fassen.\
+Die Tabelle zeigt die Restklassen von m = 6.\
+Die Spalten stellen den Rest a dar.\
+Für die einzelnen Felder gilt: b = k * m + a
 
 b) Fertige eine entsprechende Tabelle für m = 5 an.
     """)
@@ -419,47 +418,47 @@ b) Fertige eine entsprechende Tabelle für m = 5 an.
         )
     )
 
-    st.write("""
-c) Bestimme [0]3,[1]3 und [1]4.
-[0]3 = [:, -6, -3, 0, 3, 6, :]
-[1]3 = {b aus Z | es gibt K aus Z mit b = k * 3 + 1} = [:, -5, -2, 1, 4, 7, :]
-[1]4 = [:, -7, -3, 1, 5, 9, :]
+    st.write(r"""
+c) Bestimme [0]3, [1]3 und [1]4.\
+[0]₃ = {b aus Z | es gibt K aus Z mit b = k * 3 + 0} = [:, -6, -3, 0, 3, 6, :]\
+[1]₃ = {b aus Z | es gibt K aus Z mit b = k * 3 + 1} = [:, -5, -2, 1, 4, 7, :]\
+[1]₄ = {b aus Z | es gibt K aus Z mit b = k * 4 + 1} = [:, -7, -3, 1, 5, 9, :]
 
-d) Gib drei verschiedene Repräsentanten der Restklassen [3]7 und [2]8 an.
-[3]7 = [:, -11, 3, 10, :]
+d) Gib drei verschiedene Repräsentanten der Restklassen [3]7 und [2]8 an.\
+[3]7 = [:, -11, 3, 10, :]\
 [2]8 = [:, -10, 2, 10, :]
 
-e) Kennst Du Anwendungen von Restklassen im täglichen Leben?
-Uhrzeit, Wochentage, Kalender, ...
+e) Kennst Du Anwendungen von Restklassen im täglichen Leben?\
+z.B. die Uhrzeit, Wochentage, Kalender
 
-1. Zeige, dass für alle Repräsentanten a aus [4]7 und b aus [5]7 gilt: a+b aus [2]7. Benutze dafür, dass sich a und b schreiben lassen als a=7·k1+4 und b=7·k2+5 mit ganzen Zahlen k1 und k2 und ermittle, welchen Rest a+b bei Division durch 7 hat.
-[4]7 = [:, -3, 4, 11, :]
-[5]7 = [:, -2, 5, 12, :]
+1. Zeige, dass für alle Repräsentanten a aus [4]7 und b aus [5]7 gilt: a+b aus [2]7. Benutze dafür, dass sich a und b schreiben lassen als a=7·k1+4 und b=7·k2+5 mit ganzen Zahlen k1 und k2 und ermittle, welchen Rest a+b bei Division durch 7 hat.\
+[4]7 = [:, -3, 4, 11, :]\
+[5]7 = [:, -2, 5, 12, :]\
 (4 + 5) % 7 = 9 % 7 = 2
 
-[2]7 = [:, -5, 2, 9, :]
-Für a gilt: a = 7 * k1 + 4
-Für b gilt: b = 7 * k2 + 5
+[2]7 = [:, -5, 2, 9, :]\
+Für a gilt: a = 7 * k1 + 4\
+Für b gilt: b = 7 * k2 + 5\
 Für a + b gilt: a + b = (7 * k1 + 4) + (7 * k2 + 5) = 7 * (k1 + k2) + 9 = 7 * k3 + (9 % 7) = 7 * k3 + 2 mit k3 = k1 + k2
 
 2. Zeige, dass für alle Repräsentanten a aus [4]7 und b aus [5]7 gilt: a·b aus [6]7. Benutze dafür, dass sich a und b schreiben lassen als a=7·k1+4 und b=7·k2+5 mit ganzen Zahlen k1 und k2 und ermittle, welchen Rest a·b bei Division durch 7 hat.
-[4]7 = [:, -3, 4, 11, :]
-[5]7 = [:, -2, 5, 12, :]
+[4]7 = [:, -3, 4, 11, :]\
+[5]7 = [:, -2, 5, 12, :]\
 (4 * 5) % 7 = 20 % 7 = 6
 
-[6]7 = [:, -1, 6, 13, :]
-Für a gilt: a = 7 * k1 + 4
-Für b gilt: b = 7 * k2 + 5
-Für a * b gilt: 
-a * b = (7 * k1 + 4) * (7 * k2 + 5) = 49 * k1 * k2 + 35 * k1 + 28 * k2 + 20 
-     = 49 * k3 + 35 * k1 + 28 * k2 + 20 = 7 * (7 * k3 + 5 * k1 + 4 * k2) + 20 | mit k3 = k1 * k2
-     = 7 * k4 + (20 % 7) = 7 * k4 + 6 mit k4 = 7 * k3 + 5 * k1 + 4 * k2    
+[6]7 = [:, -1, 6, 13, :]\
+Für a gilt: a = 7 * k1 + 4\
+Für b gilt: b = 7 * k2 + 5\
+Für a * b gilt: \
+a * b = (7 * k1 + 4) * (7 * k2 + 5) = 49 * k1 * k2 + 35 * k1 + 28 * k2 + 20\
+     = 49 * k3 + 35 * k1 + 28 * k2 + 20 = 7 * (7 * k3 + 5 * k1 + 4 * k2) + 20 | mit k3 = k1 * k2\
+     = 7 * k4 + (20 % 7) = 7 * k4 + 6 mit k4 = 7 * k3 + 5 * k1 + 4 * k2
 
 3. Leicht darstellen kann man Addition und Multiplikation von Restklassen mit Tabellen. Wenn aus dem Zusammenhang klar ist, welche Restklassen man betrachtet, kann man die Symbole [ ]m auch weglassen.
 
-a) Zeige, dass für die Restklassen modulo 3 folgende Additions- und Multiplikationstabelle gilt:
-    Der Rest n bei der Addition entsteht aus (3 * k1 + n1) + (3 * k2 + n2) | Für n muss somit gelten: n = (n1 + n2) % 3
-    Der Rest n bei der Multiplikation entsteht aus (3 * k1 + n1) * (3 * k2 + n2) | Für n muss somit gelten: n = (n1 * n2) % 3
+a) Zeige, dass für die Restklassen modulo 3 folgende Additions- und Multiplikationstabelle gilt:\
+Der Rest n bei der Addition entsteht aus (3 * k1 + n1) + (3 * k2 + n2) | Für n muss somit gelten: n = (n1 + n2) % 3
+Der Rest n bei der Multiplikation entsteht aus (3 * k1 + n1) * (3 * k2 + n2) | Für n muss somit gelten: n = (n1 * n2) % 3
     """)
 
     additionTable3a = np.zeros((3, 3))
@@ -484,7 +483,7 @@ a) Zeige, dass für die Restklassen modulo 3 folgende Additions- und Multiplikat
         )
     )
 
-    st.write("""
+    st.write(r"""
     b) Ermittle Additions- und Multiplikationstabelle für die Restklassen modulo 6.
     """)
 
@@ -511,9 +510,39 @@ a) Zeige, dass für die Restklassen modulo 3 folgende Additions- und Multiplikat
     )
 
 with st.expander("Modulares Potenzieren"):
-    st.write("""
-    (a·b) mod m = (a mod m·b mod m) mod m
-    (a**b) mod m = (a mod m)**b mod m
+    st.write(r"""
+#### Regeln
+(a·b) mod m = (a mod m·b mod m) mod m\
+(a**b) mod m = (a mod m)**b mod m
 
-    7**4 mod 12 = 7**2 * 7**2 mod 12 = 7**2 mod 12 * 7**2 mod 12 = 7 mod 12 * 7 mod 12 = 7 * 7 mod 12 = 49 mod 12 = 1
+#### Aufgabe 1:
+Für 7 ** 4 mod 12 gilt die Form (a**b) mod m\
+Diese wurde in (a ** (b/2) * a ** (b/2)) mod m umgewandelt\
+Nach der ersten Regel lässt sich dies nun in (a ** (b/2) mod m * a ** (b/2) mod m) mod m umwandeln\
+Somit (49 % 12 * 49 % 12) % 12 = (1 * 1) % 12 = 1
+
+Für 82 ** 17 mod 20 gilt die Form (a**b) mod m\
+Im nächsten Schritt wurde nach der zweiten oberen Regel das a=82 durch a=2 gekürzt, da sie sich in der selben Restklasse befinden. | 82 % 20 = 2 $\rightarrow%$ 20 * 4 + 2 | 2 % 20 = 2\
+Nun wird der Term wieder in ein Produkt aufgeteilt, wodurch sich die erste obere Regel anwenden lässt.
+Nun kann auch 16 durch -4 ersetzt werden, da sie sich in der selben Restklasse befinden. | 16 % 20 = 16 $\rightarrow%$ 20 * 0 + 16 | -4 % 20 = 16\
+Somit (-4)**2 * 2 % 20 = (16 * 2) % 20 = 32 % 20 = 12
+
+#### Aufgabe 2:
+a) 8 ** 9 mod 7 = 1 ** 9 mod 7 = 1\
+b) 6 ** 9 mod 7 = (-1) ** 9 mod 7 = 6\
+c) 54 ** 16 mod 55 = (-1) ** 16 mod 55 = 1\
+d) 3 ** 333 mod 26 = (3 ** 3) ** 100 mod 26\
+    = (3 ** 3 % 26) ** 100 mod 26\
+    = 1 ** 100 mod 26\
+    = 1\
+e) 2 ** 268 mod 17 = (2 ** 4) ** 67 mod 17\
+    = (2 ** 4 % 17) ** 67 mod 17\
+    = (-1) ** 67 mod 17\
+    
+f) 2 ** 269 mod 17 = (2 ** 268 * 2) mod 17\
+    = (2 ** 268 mod 17 * 2 mod 17) mod 17\
+    = 1 * 2 mod 17\
+    = 2\
+    
+
     """)
