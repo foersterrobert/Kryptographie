@@ -6,6 +6,7 @@ import random
 import math
 import numpy as np
 
+st.set_page_config(layout="wide")
 st.title("Caeser-Verschlüsselung")
 st.subheader("Encode")
 encode_text_input = st.text_input("Enter text to encode:")
@@ -336,7 +337,13 @@ with st.expander("Aufgaben Modulo"):
 a) 27 mod 4 = 3 | print(27 % 4) $\rightarrow$ 4 * 6 + 3 = 27\
 b) 26 mod 5 = 1 | print(26 % 5) $\rightarrow$ 5 * 5 + 1 = 26\
 c) 18 mod 3 = 0 | print(18 % 3) $\rightarrow$ 3 * 6 + 0 = 18\
-g) 100037 mod 10 = 7 | print(100037 % 10) $\rightarrow$ 10 * 10003 + 7 = 100037
+d) 18 mod 7 = 4 | print(18 % 7) $\rightarrow$ 7 * 2 + 4 = 18\
+e) 21 mod 9 = 3 | print(21 % 9) $\rightarrow$ 9 * 2 + 3 = 21\
+f) 37 mod 10 = 7 | print(37 % 10) $\rightarrow$ 10 * 3 + 7 = 37\
+g) 100037 mod 10 = 7 | print(100037 % 10) $\rightarrow$ 10 * 10003 + 7 = 100037\
+h) 107 mod 4 = 3 | print(107 % 4) $\rightarrow$ 4 * 26 + 3 = 107\
+i) 1 mod 2 = 1 | print(1 % 2) $\rightarrow$ 2 * 0 + 1 = 1\
+j) 3 mod 2 = 1 | print(3 % 2) $\rightarrow$ 2 * 1 + 1 = 3\
 
 #### Aufgabe 2:
 a) sei k eine gerade Zahl. Berechne k mod 2\
@@ -351,16 +358,16 @@ b) sei k eine ungerade Zahl. Berechne k mod 2.\
 
 #### Aufgabe 3:
 a) Vergleiche  25 mod 4  und  (20 mod 4 + 5 mod 4) mod 4\
-print(25 % 4, (20 % 4 + 5 % 4) % 4) $\rightarrow$ 1, 1
+print(25 % 4, (20 % 4 + 5 % 4) % 4) $\rightarrow$ 1, 1 | identisch\
 
 b) Vergleiche  25 mod 4  und  (19 mod 4 + 6 mod 4) mod 4\
-print(25 % 4, (19 % 4 + 6 % 4) % 4) $\rightarrow$ 1, 1
+print(25 % 4, (19 % 4 + 6 % 4) % 4) $\rightarrow$ 1, 1 | identisch\
 
 c) Vergleiche  26 mod 4  und  (2 mod 4·13 mod 4) mod 4\
-print(26 % 4, (2 % 4 * 13 % 4) % 4) $\rightarrow$ 2, 2
+print(26 % 4, (2 % 4 * 13 % 4) % 4) $\rightarrow$ 2, 2 | identisch\
 
 d) Vergleiche  7**3 mod 4  und  (7 mod 4)**3 mod 4\
-print(7 ** 3 % 4, (7 % 4) ** 3 % 4) $\rightarrow$ 3, 3
+print(7 ** 3 % 4, (7 % 4) ** 3 % 4) $\rightarrow$ 3, 3 | identisch\
 
 #### Regeln
 (a + b) mod m = (a mod m + b mod m) mod m\
@@ -377,15 +384,17 @@ print((25 ** 12) % 4, (25 % 4) ** 12 % 4) $\rightarrow$ 1, 1
 
 #### Aufgabe 4:
 a) Es sei n irgendeine natürliche Zahl, die mit den Ziffern ...34 endet. Berechne n mod 4\
-print(34 % 4, (12100 + 34) % 4) $\rightarrow$ 2
+34 mod 4 = 2 | print(34 % 4) $\rightarrow$ 4 * 8 + 2 = 34\
+12134 mod 4 = 2 | print(12134 % 4) $\rightarrow$ 4 * 3033 + 2 = 12134\
 
 b) Wie kann man leicht überprüfen, ob eine Zahl durch 4 teilbar ist?\
 Die Zahl n ist durch 4 teilbar, wenn die letzte Ziffer 0, 4, 8 oder 2 ist.\
-Der Modulo Rest ist dann 0. $\rightarrow$ n mod 4 != 0 | z.B. print(24 % 4)
+Der Modulo Rest muss 0 sein. $\rightarrow$ n mod 4 != 0 | z.B. print(24 % 4)
 
 #### Aufgabe 5:
-Es ist 10 Uhr am Vormittag (Mittwoch) und du hast in 50 Stunden einen Terminbeim Zahnarzt und in 70 Stunden einen Computerkurs. Wann finden die Terminestatt?
-print((10 + 50) % 24, (10 + 70) % 24) $\rightarrow$ 12, 8\
+Es ist 10 Uhr am Vormittag (Mittwoch) und du hast in 50 Stunden einen Terminbeim Zahnarzt und in 70 Stunden einen Computerkurs. Wann finden die Terminestatt?\
+Zahnarzt: 10 Uhr + 50 Stunden = 60 Uhr $\rightarrow$ 60 Uhr mod 24 = 12 Uhr\
+Computerkurs: 10 Uhr + 70 Stunden = 80 Uhr $\rightarrow$ 80 Uhr mod 24 = 8 Uhr\
 Der Zahnarzttermin ist am Freitag um 12 Uhr und der Computerkurs am Samstag um 8 Uhr.
         """
     )
@@ -393,7 +402,7 @@ Der Zahnarzttermin ist am Freitag um 12 Uhr und der Computerkurs am Samstag um 8
 with st.expander("Aufgaben Restklassen"):
     st.write(r"""
 Restklassen
-[a]m = {b aus Z | es existiert K aus Z für das gilt: b = k * m + a} = {b | b identisch mit a mod m}\
+[a]$_{m}$ = {b $\in$ $\mathbf{Z}$ | $\exists$K $\in$ $\mathbf{Z}$ : b = k * m + a} = {b | b $\equiv$ a mod m}\
 Die Restklasse einer ganzen Zahl a modulo einer Zahl m ist die Menge all der Zahlen, die bei Division durch denselben (positiven)
 
 #### Aufgabe 1:
@@ -419,46 +428,51 @@ b) Fertige eine entsprechende Tabelle für m = 5 an.
     )
 
     st.write(r"""
-c) Bestimme [0]3, [1]3 und [1]4.\
-[0]₃ = {b aus Z | es gibt K aus Z mit b = k * 3 + 0} = [:, -6, -3, 0, 3, 6, :]\
-[1]₃ = {b aus Z | es gibt K aus Z mit b = k * 3 + 1} = [:, -5, -2, 1, 4, 7, :]\
-[1]₄ = {b aus Z | es gibt K aus Z mit b = k * 4 + 1} = [:, -7, -3, 1, 5, 9, :]
+c) Bestimme [0]$_{3}$, [1]$_{3}$ und [1]$_{4}$.\
+[0]$_{3}$ = {b aus Z | es gibt K aus Z mit b = k * 3 + 0} = [:, -6, -3, 0, 3, 6, :]\
+[1]$_{3}$ = {b aus Z | es gibt K aus Z mit b = k * 3 + 1} = [:, -5, -2, 1, 4, 7, :]\
+[1]$_{4}$ = {b aus Z | es gibt K aus Z mit b = k * 4 + 1} = [:, -7, -3, 1, 5, 9, :]
 
-d) Gib drei verschiedene Repräsentanten der Restklassen [3]7 und [2]8 an.\
-[3]7 = [:, -11, 3, 10, :]\
-[2]8 = [:, -10, 2, 10, :]
+d) Gib drei verschiedene Repräsentanten der Restklassen [3]$_{7}$ und [2]$_{8}$ an.\
+[3]$_{7}$ = [:, -11, 3, 10, :]\
+[2]$_{8}$ = [:, -10, 2, 10, :]
 
 e) Kennst Du Anwendungen von Restklassen im täglichen Leben?\
-z.B. die Uhrzeit, Wochentage, Kalender
+Mögliche Anwendungen wären die Uhrzeit, Wochentage und Kalender.
 
-1. Zeige, dass für alle Repräsentanten a aus [4]7 und b aus [5]7 gilt: a+b aus [2]7. Benutze dafür, dass sich a und b schreiben lassen als a=7·k1+4 und b=7·k2+5 mit ganzen Zahlen k1 und k2 und ermittle, welchen Rest a+b bei Division durch 7 hat.\
-[4]7 = [:, -3, 4, 11, :]\
-[5]7 = [:, -2, 5, 12, :]\
-(4 + 5) % 7 = 9 % 7 = 2
+###### 1. Zeige, dass für alle Repräsentanten a aus [4]$_{7}$ und b aus [5]$_{7}$ gilt: a+b aus [2]$_{7}$. Benutze dafür, dass sich a und b schreiben lassen als a=7·k1+4 und b=7·k2+5 mit ganzen Zahlen k1 und k2 und ermittle, welchen Rest a+b bei Division durch 7 hat.\
+[4]$_{7}$ = [:, -3, 4, 11, :]\
+[5]$_{7}$ = [:, -2, 5, 12, :]\
+Hierfür gilt: (4 + 5) % 7 = 9 % 7 = 2
 
-[2]7 = [:, -5, 2, 9, :]\
+[2]$_{7}$ = [:, -5, 2, 9, :]\
 Für a gilt: a = 7 * k1 + 4\
 Für b gilt: b = 7 * k2 + 5\
 Für a + b gilt: a + b = (7 * k1 + 4) + (7 * k2 + 5) = 7 * (k1 + k2) + 9 = 7 * k3 + (9 % 7) = 7 * k3 + 2 mit k3 = k1 + k2
+Somit entsteht die Restklasse [2]$_{7}$.
 
-2. Zeige, dass für alle Repräsentanten a aus [4]7 und b aus [5]7 gilt: a·b aus [6]7. Benutze dafür, dass sich a und b schreiben lassen als a=7·k1+4 und b=7·k2+5 mit ganzen Zahlen k1 und k2 und ermittle, welchen Rest a·b bei Division durch 7 hat.
-[4]7 = [:, -3, 4, 11, :]\
-[5]7 = [:, -2, 5, 12, :]\
-(4 * 5) % 7 = 20 % 7 = 6
+###### 2. Zeige, dass für alle Repräsentanten a aus [4]$_{7}$ und b aus [5]$_{7}$ gilt: a·b aus [6]$_{7}$. Benutze dafür, dass sich a und b schreiben lassen als a=7·k1+4 und b=7·k2+5 mit ganzen Zahlen k1 und k2 und ermittle, welchen Rest a·b bei Division durch 7 hat.
+[4]$_{7}$ = [:, -3, 4, 11, :]\
+[5]$_{7}$ = [:, -2, 5, 12, :]\
+Hierfür gilt: (4 * 5) % 7 = 20 % 7 = 6
 
-[6]7 = [:, -1, 6, 13, :]\
+[6]$_{7}$ = [:, -1, 6, 13, :]\
 Für a gilt: a = 7 * k1 + 4\
 Für b gilt: b = 7 * k2 + 5\
 Für a * b gilt: \
-a * b = (7 * k1 + 4) * (7 * k2 + 5) = 49 * k1 * k2 + 35 * k1 + 28 * k2 + 20\
-     = 49 * k3 + 35 * k1 + 28 * k2 + 20 = 7 * (7 * k3 + 5 * k1 + 4 * k2) + 20 | mit k3 = k1 * k2\
-     = 7 * k4 + (20 % 7) = 7 * k4 + 6 mit k4 = 7 * k3 + 5 * k1 + 4 * k2
+a * b = (7 * k1 + 4) * (7 * k2 + 5) 
+= 49 * k1 * k2 + 35 * k1 + 28 * k2 + 20\
+= 49 * k3 + 35 * k1 + 28 * k2 + 20 = 7 * (7 * k3 + 5 * k1 + 4 * k2) + 20 | mit k3 = k1 * k2\
+= 7 * k4 + (20 % 7) = 7 * k4 + 6 mit k4 = 7 * k3 + 5 * k1 + 4 * k2
+Somit entsteht die Restklasse [6]$_{7}$.
 
 3. Leicht darstellen kann man Addition und Multiplikation von Restklassen mit Tabellen. Wenn aus dem Zusammenhang klar ist, welche Restklassen man betrachtet, kann man die Symbole [ ]m auch weglassen.
 
 a) Zeige, dass für die Restklassen modulo 3 folgende Additions- und Multiplikationstabelle gilt:\
 Der Rest n bei der Addition entsteht aus (3 * k1 + n1) + (3 * k2 + n2) | Für n muss somit gelten: n = (n1 + n2) % 3
 Der Rest n bei der Multiplikation entsteht aus (3 * k1 + n1) * (3 * k2 + n2) | Für n muss somit gelten: n = (n1 * n2) % 3
+
+Additionstabelle:
     """)
 
     additionTable3a = np.zeros((3, 3))
@@ -472,6 +486,10 @@ Der Rest n bei der Multiplikation entsteht aus (3 * k1 + n1) * (3 * k2 + n2) | F
         )
     )
 
+    st.write(r"""
+Multiplikationstabelle:
+    """)
+
     multiplikationsTable3a = np.zeros((3, 3))
     for row in range(3):
         for col in range(3):
@@ -484,7 +502,9 @@ Der Rest n bei der Multiplikation entsteht aus (3 * k1 + n1) * (3 * k2 + n2) | F
     )
 
     st.write(r"""
-    b) Ermittle Additions- und Multiplikationstabelle für die Restklassen modulo 6.
+b) Ermittle Additions- und Multiplikationstabelle für die Restklassen modulo 6.
+
+Additionstabelle:
     """)
 
     additionTable6b = np.zeros((6, 6))
@@ -497,6 +517,10 @@ Der Rest n bei der Multiplikation entsteht aus (3 * k1 + n1) * (3 * k2 + n2) | F
             additionTable6b
         )
     )
+
+    st.write(r"""
+Multiplikationstabelle:
+    """)
 
     multiplikationsTable6b = np.zeros((6, 6))
     for row in range(6):
@@ -538,11 +562,8 @@ d) 3 ** 333 mod 26 = (3 ** 3) ** 100 mod 26\
 e) 2 ** 268 mod 17 = (2 ** 4) ** 67 mod 17\
     = (2 ** 4 % 17) ** 67 mod 17\
     = (-1) ** 67 mod 17\
-    
 f) 2 ** 269 mod 17 = (2 ** 268 * 2) mod 17\
     = (2 ** 268 mod 17 * 2 mod 17) mod 17\
     = 1 * 2 mod 17\
-    = 2\
-    
-
+    = 2
     """)
