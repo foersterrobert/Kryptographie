@@ -572,32 +572,44 @@ i) 3 ** 333 mod 15 = (3 * 3 ** 332) mod 15\
 with st.expander("4. sym-asym Verschlüsselung"):
     st.write(r"""
 #### Aufgabe 1: Was ist der Nachteil an der symmetrischen Verschlüsselung?
-Bei der symmetrischen Verschlüsselung wird der selbe Schlüssel zum Verschlüsseln und Entschlüsseln verwendet.
-Dieser Schlüssel muss also geheim gehalten werden, wird er jedoch beim Verschlüsseln abgefangen, so kann ein Dritter ihn missbrauchen um wiederum Nachrichten zu entschlüsseln.
+Bei der symmetrischen Verschlüsselung wird der selbe Schlüssel zum Verschlüsseln und Entschlüsseln verwendet, womit er vor Dritten vollständig geheim gehalten werden muss.
+Somit entsteht das Problem, dass der Schlüssel schon im Vorhinein sicher zwischen dem Sender und Empfänger ausgetauscht worden sein muss, bevor es überhaupt zu einer Kommunikation kommen kann.
 
 #### Aufgabe 2: Fasse die Schritte der asymmetrischen Verschlüsselung in Worte!
-1.
-2.
-3.
-4.
+1. Der Sender (A) verschlüsselt eine Nachricht mit seinem Schlüssel und schickt diese ohne den eigenen Schlüssel an den Empfänger (B).
+2. Der Empfänger (B) verschlüsselt die Nachricht ebenfalls mit seinem Schlüssel und schickt diese ohne den eigenen Schlüssel zurück an den Sender (A).
+3. Der Sender (A) entschlüsselt sein eigenes Schloss mit seinem Schlüssel, wodurch die Nachricht nur noch mit dem Schlüssel des Empfängers (B) verschlüsselt ist. Nun schickt er die Nachricht wieder an den Empfänger (B).
+4. Der Empfänger (B) entschlüsselt die Nachricht mit seinem Schlüssel und kann sie nun lesen.
     """)
 
 with st.expander("5. Einwegfunktionen"):
-    st.text(r"""
+    st.write(r"""
+#### Aufgabe 1: Inwiefern entspricht ein Telefonbuch einer Einwegfunktion?
+Ein Telefonbuch lässt sich als eine Funktion $f$ betrachten, die jedem Namen $x$ eine Telefonnummer $y$ zuordnet.
+Bei der richtigen Benutzung ist es leicht, einem bestimmten Namen $x_{1}$ die zugehörige Telefonnummer $y_{1}$ zuzuordnen.
+Andersherum ist es jedoch wahnsinnig zeitaufwendig, basierend auf der Telefonnummer $y_{1}$ den zugehörigen Namen $x_{1}$ zu finden, da man praktisch das gesamte Telefonbuch durchsuchen müsste.
+Somit handelt es sich bei einem Telefonbuch um eine Einwegfunktion.
 
+#### Aufgabe 2: Beschreibe, inwiefern die folgenden Vorgänge Einwegfunktionen entsprechen:
+a) Erbsen und Linsen mischen\
+b) Farben mischen\
+c) Geld ausgeben\
+d) Sand und Kies mischen\
+
+#### Aufgabe: Inwiefern kann ein Briefkasten als Bild für eine Trapdoor-Einwegfunktion angesehen werden?
     """)
 
 with st.expander("6. RSA auf einen Blick"):
-    st.text(r"""
+    st.write(r"""
 
     """)
 
 with st.expander("7. euklidischer Algorithmus"):
-    st.text(r"""
+    st.write(r"""
 
     """)
 
 with st.expander("8. multiplikatives Inverses"):
-    st.text(r"""
+    st.write(r"""
 
     """)
