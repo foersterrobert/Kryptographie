@@ -592,21 +592,49 @@ Somit handelt es sich bei einem Telefonbuch um eine Einwegfunktion.
 
 #### Aufgabe 2: Beschreibe, inwiefern die folgenden Vorgänge Einwegfunktionen entsprechen:
 a) Erbsen und Linsen mischen\
+Das vermischen von Erbsen und Linsen aus dem sortierten Zustand ist einfach, wärend das wiederherstellen des sortierten Zustandes aus dem gemischten Zustand sehr zeitaufwendig ist.
+Somit handelt es sich bei dem Vermischen von Erbsen und Linsen um eine Einwegfunktion.
+
 b) Farben mischen\
+Das vermischen von Farben aus dem ungemischten Zustand ist einfach, wärend das wiederherstellen des ungemischten Zustandes aus dem gemischten Zustand im Regelfall unmöglich ist.
+Somit handelt es sich bei dem Vermischen von Farben um eine Einwegfunktion.
+
 c) Geld ausgeben\
+Der Vorgang des Geldausgebens ist in die Richtung des Ausgebens einfach, während der Vorgang des Geldzurückbekommens sehr aufwendig ist.
+Ist man zusätzlich daran interessiert z.B. einen speziellen Schein wiederzubekommen, so ist der Vorgang des Geldzurückbekommens praktisch unmöglich.
+Somit handelt es sich bei dem Geldausgeben um eine Einwegfunktion.
+
+
 d) Sand und Kies mischen\
+Das vermischen von Sand und Kies aus dem sortierten Zustand ist einfach, wärend das wiederherstellen des sortierten Zustandes aus dem gemischten Zustand sehr zeitaufwendig ist.
+Somit handelt es sich bei dem Vermischen von Sand und Kies um eine Einwegfunktion.
 
 #### Aufgabe: Inwiefern kann ein Briefkasten als Bild für eine Trapdoor-Einwegfunktion angesehen werden?
+Ohne einen Schlüssel handelt es sich bei dem Einwerfen eines Briefes in einen Briefkasten um eine Einwegfunktion, da der Brief nicht mehr herausgenommen werden kann.
+Der Schlüssel stellt eine geheime Zusatzinformation (trapdoor) dar, über die der Brief einfach wieder herausgenommen werden kann.
+Somit handelt es sich bei dem Einwerfen eines Briefes in einen Briefkasten um eine Trapdoor-Einwegfunktion.
     """)
 
 with st.expander("6. RSA auf einen Blick"):
-    st.write(r"""
-
-    """)
+    st.image("rsa-beschriftet.png")
 
 with st.expander("7. euklidischer Algorithmus"):
     st.write(r"""
+#### Aufgabe 1: Bestimme den Euklidischen Algorithmus für den ggT
+a) 24 und 9\
+24 mod 9 = 6 $\rightarrow$ 9 mod 6 = 3 $\rightarrow$ 6 mod 3 = 0 $\rightarrow$ ggT(24, 9) = 3
 
+b) 36 und 18\
+36 mod 18 = 0 $\rightarrow$ ggT(36, 18) = 18
+
+c) 75 und 45\
+75 mod 45 = 30 $\rightarrow$ 45 mod 30 = 15 $\rightarrow$ 30 mod 15 = 0 $\rightarrow$ ggT(75, 45) = 15
+
+d) 720 und 288\
+720 mod 288 = 144 $\rightarrow$ 288 mod 144 = 0 $\rightarrow$ ggT(720, 288) = 144
+
+e) 1071 und 1029\
+1071 mod 1029 = 42 $\rightarrow$ 1029 mod 42 = 21 $\rightarrow$ 42 mod 21 = 0 $\rightarrow$ ggT(1071, 1029) = 21
     """)
 
 with st.expander("8. multiplikatives Inverses"):
