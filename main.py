@@ -1,7 +1,7 @@
 from string import ascii_lowercase
 import pandas as pd
 import streamlit as st
-import enchant
+# import enchant
 import random
 import math
 import numpy as np
@@ -37,12 +37,12 @@ decode_index = st.slider('Index', 0, len(ascii_lowercase) - 1)
 decode_button = st.button("Decode")
 dictsolve = st.button("Solve by searching in dictionary")
 charsolve = st.button("Solve by looking at the letter distribution")
-language = st.selectbox(
-    'language',
-    enchant.list_languages(),
-)
+# language = st.selectbox(
+#     'language',
+#     enchant.list_languages(),
+# )
 
-d = enchant.Dict(language)
+# d = enchant.Dict(language)
 
 letter_distribution = {
     'a': 6.51,
@@ -85,44 +85,44 @@ if decode_button:
             decode_text += char
     st.success(decode_text)
 
-if dictsolve:
-    solveMap = {}
-    for i in range(len(ascii_lowercase) - 1):
-        solve_text = ''
-        for char in decode_text_input:
-            if char.isalpha():
-                if char.isupper():
-                    solve_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - i) % len(ascii_lowercase)].upper()
-                if char.islower():
-                    solve_text += ascii_lowercase[(ascii_lowercase.index(char) - i) % len(ascii_lowercase)]
-            else:
-                solve_text += char
+# if dictsolve:
+#     solveMap = {}
+#     for i in range(len(ascii_lowercase) - 1):
+#         solve_text = ''
+#         for char in decode_text_input:
+#             if char.isalpha():
+#                 if char.isupper():
+#                     solve_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - i) % len(ascii_lowercase)].upper()
+#                 if char.islower():
+#                     solve_text += ascii_lowercase[(ascii_lowercase.index(char) - i) % len(ascii_lowercase)]
+#             else:
+#                 solve_text += char
 
-        solve_words = solve_text.encode("ascii", "ignore").decode().split(' ')
+#         solve_words = solve_text.encode("ascii", "ignore").decode().split(' ')
 
-        for word in solve_words:
-            if d.check(word):
-                if i not in solveMap.keys():
-                    solveMap[i] = {
-                        'idx': 1,
-                    }
-                else:
-                    solveMap[i]['idx'] += 1
+#         for word in solve_words:
+#             if d.check(word):
+#                 if i not in solveMap.keys():
+#                     solveMap[i] = {
+#                         'idx': 1,
+#                     }
+#                 else:
+#                     solveMap[i]['idx'] += 1
 
-        if i in solveMap.keys():
-            solveMap[i]['str'] = solve_text
+#         if i in solveMap.keys():
+#             solveMap[i]['str'] = solve_text
 
-    if len(solveMap) > 0:
-        solveMapKeys = sorted(
-            solveMap.keys(),
-            key=lambda x: solveMap[x]['idx'],
-            reverse=True
-        )
-        for key in solveMapKeys[:5]:
-            st.text(
-                f'{solveMap[key]["str"]} at index {key}')
-    else:
-        st.text("No solution found")
+#     if len(solveMap) > 0:
+#         solveMapKeys = sorted(
+#             solveMap.keys(),
+#             key=lambda x: solveMap[x]['idx'],
+#             reverse=True
+#         )
+#         for key in solveMapKeys[:5]:
+#             st.text(
+#                 f'{solveMap[key]["str"]} at index {key}')
+#     else:
+#         st.text("No solution found")
 
 if charsolve:
     solveMap = {}
