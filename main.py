@@ -204,12 +204,13 @@ st.markdown('---')
 st.subheader("Decode")
 decode_text_input_vi = st.text_input("Enter text to decode:", key="decode_text_input_vi")
 decode_word_vi = st.text_input("Enter word to use for decoding:")
+decode_word_vi_cleaned = "".join([char for char in ascii_lowercase for char in decode_word_vi.lower() if char in ascii_lowercase])
 decode_button_vi = st.button("Decode", key="decode_button_vi")
 
 if decode_button_vi:
     decode_text_vi = ''
     for i, char in enumerate(decode_text_input_vi):
-        decode_index_vi = ascii_lowercase.index(decode_word_vi[i % len(decode_word_vi)]) + 1
+        decode_index_vi = ascii_lowercase.index(decode_word_vi_cleaned[i % len(decode_word_vi_cleaned)]) + 1
 
         if char.isalpha():
             if char.isupper():
