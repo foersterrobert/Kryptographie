@@ -1,4 +1,4 @@
 streamlit
 numpy
 pandas
-pyenchant
+libenchant1c2a
