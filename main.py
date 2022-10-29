@@ -154,6 +154,26 @@ if charsolve:
         st.text(
             f'{solveMap[key]["str"]} at index {key}')
 
+with st.expander("Caesar Code"):
+    st.code("""
+encode_text_cleaned = encode_text_input.replace(
+    'ä', 'ae').replace('Ä', 'Ae').replace('ö', 'oe').replace('Ö', 'Oe').replace(
+    'ü', 'ue').replace('Ü', 'Ue').replace('ß', 'ss') # Gleiche das deutsche Alphabet mit dem Caesar Alphabet ab
+
+encode_text = ''
+for char in encode_text_cleaned: # Iteriere über jeden Buchstaben im gesäuberten Text
+    if char.isalpha(): # Überprüfe ob es sich um einen Buchstaben handelt
+        if char.isupper(): # Überprüfe ob es sich um einen Großbuchstaben handelt
+            # Finde den Buchstaben im Alphabet und füge nun den um den Index verschobenen Buchstaben zum verschlüsselten Text hinzu
+            encode_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) + encode_index) % len(ascii_lowercase)].upper()
+        elif char.islower(): # Überprüfe ob es sich um einen Kleinbuchstaben handelt
+            # Finde den Buchstaben im Alphabet und füge nun den um den Index verschobenen Buchstaben zum verschlüsselten Text hinzu
+            encode_text += ascii_lowercase[(ascii_lowercase.index(char) + encode_index) % len(ascii_lowercase)]
+    else: # Wenn es sich nicht um einen Buchstaben handelt, füge ihn einfach zum verschlüsselten Text hinzu
+        encode_text += char
+
+print(encode_text) # Gib den verschlüsselten Text aus
+""", language="python")
 
 st.title("Vigenere Cipher")
 st.subheader("Encode")
@@ -198,6 +218,22 @@ if decode_button_vi:
         else:
             decode_text_vi += char
     st.success(decode_text_vi)
+
+with st.expander("Vigenere Code"):
+    st.code("""
+encode_text_vi = ''
+for i, char in enumerate(encode_text_cleaned_vi):
+    encode_index_vi = ascii_lowercase.index(encode_word_vi[i % len(encode_word_vi)]) + 1
+
+    if char.isalpha():
+        if char.isupper():
+            encode_text_vi += ascii_lowercase[(ascii_lowercase.index(char.lower()) + encode_index_vi) % len(ascii_lowercase)].upper()
+        elif char.islower():
+            encode_text_vi += ascii_lowercase[(ascii_lowercase.index(char) + encode_index_vi) % len(ascii_lowercase)]
+    else:
+        encode_text_vi += char
+print(encode_text_vi)
+    """, language="python")
 
 def gcd(a, b):
     """
@@ -268,91 +304,46 @@ def generate_e(phi):
             return e
 
 st.title("RSA")
-gen_rsa = st.button("Generate new keys", key="generate_new_keys")
-
-if 'rsa_p' not in st.session_state or gen_rsa:
-    with st.spinner('Generating new keys...'):
-        st.session_state['rsa_p'] = generate_prime(0, 10**300, 10**301)
-        st.session_state['rsa_q'] = generate_prime(st.session_state['rsa_p'], 10**300, 10**301)
-        st.session_state['rsa_n'] = st.session_state['rsa_p'] * st.session_state['rsa_q']
-        st.session_state['rsa_phi'] = (st.session_state['rsa_p'] - 1) * (st.session_state['rsa_q'] - 1)
-        st.session_state['rsa_e'] = generate_e(st.session_state['rsa_phi'])
-        st.session_state['rsa_d'] = pow(st.session_state['rsa_e'], -1, st.session_state['rsa_phi']) 
-
-        # rsa_a, rsa_x, rsa_y = xgcd(st.session_state['rsa_e'], st.session_state['rsa_phi'])
-        # if (rsa_x < 0):
-        #     st.session_state['rsa_d'] = rsa_x + st.session_state['rsa_phi']
-        # else:
-        #     st.session_state['rsa_d'] = rsa_x
-
-st.text(
-f"""
-p: {st.session_state['rsa_p']}
-q: {st.session_state['rsa_q']}
-n: {st.session_state['rsa_n']}
-phi: {st.session_state['rsa_phi']}
-e: {st.session_state['rsa_e']}
-d: {st.session_state['rsa_d']}
-""")
-
-st.subheader("Encode")
-encode_message_rsa = st.text_input("Enter message to encode:", key="encode_message_rsa")
-encode_button_rsa = st.button("Encode", key="encode_button_rsa")
-
-if encode_button_rsa:
-    encode_message_ascii_rsa = [ord(char) for char in encode_message_rsa]
-    encode_message_ascii_rsa = [pow(c, st.session_state['rsa_e'], st.session_state['rsa_n']) for c in encode_message_ascii_rsa]
-    st.success(" ".join([str(c) for c in encode_message_ascii_rsa]))
-
-st.markdown("---")
-
-st.subheader("Decode")
-decode_message_rsa = st.text_input("Enter message to decode:", key="decode_message_rsa")
-decode_button_rsa = st.button("Decode", key="decode_button_rsa")
-
-if decode_button_rsa:
-    decode_message_ascii_rsa = [int(c) for c in decode_message_rsa.split(" ")]
-    decode_message_ascii_rsa = [pow(c, st.session_state['rsa_d'], st.session_state['rsa_n']) for c in decode_message_ascii_rsa]
-    st.success("".join([chr(c) for c in decode_message_ascii_rsa]))
+rsa_body = st.container()
 
 st.title("Mathe Aufgaben")
 with st.expander("1. Modulo"):
     st.write(r"""
 #### Aufgabe 1:
-a) 27 mod 4 = 3 | print(27 % 4) $\rightarrow$ 4 * 6 + 3 = 27\
-b) 26 mod 5 = 1 | print(26 % 5) $\rightarrow$ 5 * 5 + 1 = 26\
-c) 18 mod 3 = 0 | print(18 % 3) $\rightarrow$ 3 * 6 + 0 = 18\
-d) 18 mod 7 = 4 | print(18 % 7) $\rightarrow$ 7 * 2 + 4 = 18\
-e) 21 mod 9 = 3 | print(21 % 9) $\rightarrow$ 9 * 2 + 3 = 21\
-f) 37 mod 10 = 7 | print(37 % 10) $\rightarrow$ 10 * 3 + 7 = 37\
-g) 100037 mod 10 = 7 | print(100037 % 10) $\rightarrow$ 10 * 10003 + 7 = 100037\
-h) 107 mod 4 = 3 | print(107 % 4) $\rightarrow$ 4 * 26 + 3 = 107\
-i) 1 mod 2 = 1 | print(1 % 2) $\rightarrow$ 2 * 0 + 1 = 1\
-j) 3 mod 2 = 1 | print(3 % 2) $\rightarrow$ 2 * 1 + 1 = 3
+a) 27 mod 4 = 3 | print(27 % 4) $\rightarrow$ 4 $\cdot$ 6 + 3 = 27\
+b) 26 mod 5 = 1 | print(26 % 5) $\rightarrow$ 5 $\cdot$5 + 1 = 26\
+c) 18 mod 3 = 0 | print(18 % 3) $\rightarrow$ 3 $\cdot$ 6 + 0 = 18\
+d) 18 mod 7 = 4 | print(18 % 7) $\rightarrow$ 7 $\cdot$ 2 + 4 = 18\
+e) 21 mod 9 = 3 | print(21 % 9) $\rightarrow$ 9 $\cdot$ 2 + 3 = 21\
+f) 37 mod 10 = 7 | print(37 % 10) $\rightarrow$ 10 $\cdot$ 3 + 7 = 37\
+g) 100037 mod 10 = 7 | print(100037 % 10) $\rightarrow$ 10 $\cdot$ 10003 + 7 = 100037\
+h) 107 mod 4 = 3 | print(107 % 4) $\rightarrow$ 4 $\cdot$ 26 + 3 = 107\
+i) 1 mod 2 = 1 | print(1 % 2) $\rightarrow$ 2 $\cdot$ 0 + 1 = 1\
+j) 3 mod 2 = 1 | print(3 % 2) $\rightarrow$ 2 $\cdot$ 1 + 1 = 3
 
 #### Aufgabe 2:
 a) sei k eine gerade Zahl. Berechne k mod 2\
-2 % 2 = 0 $\rightarrow$ 2 * 1 + 0 = 2\
-4 % 2 = 0 $\rightarrow$ 2 * 2 + 0 = 4
+2 % 2 = 0 $\rightarrow$ 2 $\cdot$ 1 + 0 = 2\
+4 % 2 = 0 $\rightarrow$ 2 $\cdot$ 2 + 0 = 4
 ###### Eine gerade Zahl ist per Definition durch 2 teilbar. Daher ist der Rest 0.
 
 b) sei k eine ungerade Zahl. Berechne k mod 2.\
-1 % 2 = 1 $\rightarrow$ 2 * 0 + 1 = 1\
-3 % 2 = 1 $\rightarrow$ 2 * 1 + 1 = 3
+1 % 2 = 1 $\rightarrow$ 2 $\cdot$ 0 + 1 = 1\
+3 % 2 = 1 $\rightarrow$ 2 $\cdot$ 1 + 1 = 3
 ###### Eine ungerade Zahl ist per Definition nicht durch 2 teilbar. Daher ist der Rest 1.
 
 #### Aufgabe 3:
 a) Vergleiche  25 mod 4  und  (20 mod 4 + 5 mod 4) mod 4\
-print(25 % 4, (20 % 4 + 5 % 4) % 4) $\rightarrow$ 1, 1 | identisch\
+print(25 % 4, (20 % 4 + 5 % 4) % 4) $\rightarrow$ 1, 1 | identisch
 
 b) Vergleiche  25 mod 4  und  (19 mod 4 + 6 mod 4) mod 4\
-print(25 % 4, (19 % 4 + 6 % 4) % 4) $\rightarrow$ 1, 1 | identisch\
+print(25 % 4, (19 % 4 + 6 % 4) % 4) $\rightarrow$ 1, 1 | identisch
 
-c) Vergleiche  26 mod 4  und  (2 mod 4·13 mod 4) mod 4\
-print(26 % 4, (2 % 4 * 13 % 4) % 4) $\rightarrow$ 2, 2 | identisch\
+c) Vergleiche  26 mod 4  und  (2 mod 4 $\cdot$ 13 mod 4) mod 4\
+print(26 % 4, (2 % 4 $\cdot$ 13 % 4) % 4) $\rightarrow$ 2, 2 | identisch
 
-d) Vergleiche  7**3 mod 4  und  (7 mod 4)**3 mod 4\
-print(7 ** 3 % 4, (7 % 4) ** 3 % 4) $\rightarrow$ 3, 3 | identisch\
+d) Vergleiche  7$^{3}$ mod 4  und  (7 mod 4)$^3$ mod 4\
+print(7$^3$ % 4, (7 % 4)$^{3}$ % 4) $\rightarrow$ 3, 3 | identisch
 
 #### Regeln
 (a + b) mod m = (a mod m + b mod m) mod m\
@@ -361,40 +352,39 @@ print((25 + 12) % 4, (25 % 4 + 12 % 4) % 4) $\rightarrow$ 1, 1
 (a - b) mod m = (a mod m - b mod m) mod m\
 print((25 - 12) % 4, (25 % 4 - 12 % 4) % 4) $\rightarrow$ 1, 1
 
-(a * b) mod m = (a mod m * b mod m) mod m\
-print((25 * 12) % 4, (25 % 4 * 12 % 4) % 4) $\rightarrow$ 0, 0
+(a $\cdot$ b) mod m = (a mod m $\cdot$ b mod m) mod m\
+print((25 $\cdot$ 12) % 4, (25 % 4 $\cdot$ 12 % 4) % 4) $\rightarrow$ 0, 0
 
-(a ** b) mod m = (a mod m) ** b mod m\
-print((25 ** 12) % 4, (25 % 4) ** 12 % 4) $\rightarrow$ 1, 1
+(a$^{b}$) mod m = (a mod m)$^{b}$ mod m\
+print((25$^{12}$) % 4, (25 % 4)$^{12}$ % 4) $\rightarrow$ 1, 1
 
 #### Aufgabe 4:
 a) Es sei n irgendeine natürliche Zahl, die mit den Ziffern ...34 endet. Berechne n mod 4\
-34 mod 4 = 2 | print(34 % 4) $\rightarrow$ 4 * 8 + 2 = 34\
-12134 mod 4 = 2 | print(12134 % 4) $\rightarrow$ 4 * 3033 + 2 = 12134
+34 mod 4 = 2 | print(34 % 4) $\rightarrow$ 4 $\cdot$ 8 + 2 = 34\
+12134 mod 4 = 2 | print(12134 % 4) $\rightarrow$ 4 $\cdot$ 3033 + 2 = 12134
 
 b) Wie kann man leicht überprüfen, ob eine Zahl durch 4 teilbar ist?\
-Die Zahl n ist durch 4 teilbar, wenn die letzte Ziffer 0, 4, 8 oder 2 ist.\
-Der Modulo Rest muss 0 sein. $\rightarrow$ n mod 4 != 0 | z.B. print(24 % 4)
+Die Zahl n ist durch 4 teilbar, wenn der Modulo 4 Rest 0 ergibt. $\rightarrow$ n mod 4 != 0 | z.B. print(24 % 4)
 
 #### Aufgabe 5:
 Es ist 10 Uhr am Vormittag (Mittwoch) und du hast in 50 Stunden einen Terminbeim Zahnarzt und in 70 Stunden einen Computerkurs. Wann finden die Terminestatt?\
 Zahnarzt: 10 Uhr + 50 Stunden = 60 Uhr $\rightarrow$ 60 Uhr mod 24 = 12 Uhr\
 Computerkurs: 10 Uhr + 70 Stunden = 80 Uhr $\rightarrow$ 80 Uhr mod 24 = 8 Uhr\
 Der Zahnarzttermin ist am Freitag um 12 Uhr und der Computerkurs am Samstag um 8 Uhr.
-        """
-    )
+        """)
 
 with st.expander("2. Restklassen"):
     st.write(r"""
 Restklassen
-[a]$_{m}$ = {b $\in$ $\mathbf{Z}$ | $\exists$K $\in$ $\mathbf{Z}$ : b = k * m + a} = {b | b $\equiv$ a mod m}\
-Die Restklasse einer ganzen Zahl a modulo einer Zahl m ist die Menge all der Zahlen, die bei Division durch denselben (positiven)
+[a]$_{m}$ = {b $\in$ $\mathbf{Z}$ | $\exists$K $\in$ $\mathbf{Z}$ : b = k $\cdot$ m + a}\
+Die Restklasse [a]$_{m}$ ist die Menge aller Zahlen b, die bei Modulo m den Rest a haben.
 
 #### Aufgabe 1:
 a) Versuche die obige Tabelle in Worte zu fassen.\
-Die Tabelle zeigt die Restklassen von m = 6.\
-Die Spalten stellen den Rest a dar.\
-Für die einzelnen Felder gilt: b = k * m + a
+Die Tabelle zeigt die Restklassen mit m = 6.\
+Die Spalten stellen jeweils einen unterschiedlichen Rest a dar.\
+Die Reihe stellt ein unterschiedliches Vielfaches k dar.\
+Für die einzelnen Felder gilt somit: b = k $\cdot$ m + a
 
 b) Fertige eine entsprechende Tabelle für m = 5 an.
     """)
@@ -414,9 +404,9 @@ b) Fertige eine entsprechende Tabelle für m = 5 an.
 
     st.write(r"""
 c) Bestimme [0]$_{3}$, [1]$_{3}$ und [1]$_{4}$.\
-[0]$_{3}$ = {b aus Z | es gibt K aus Z mit b = k * 3 + 0} = [:, -6, -3, 0, 3, 6, :]\
-[1]$_{3}$ = {b aus Z | es gibt K aus Z mit b = k * 3 + 1} = [:, -5, -2, 1, 4, 7, :]\
-[1]$_{4}$ = {b aus Z | es gibt K aus Z mit b = k * 4 + 1} = [:, -7, -3, 1, 5, 9, :]
+[0]$_{3}$ = {b aus Z | es gibt K aus Z mit b = k $\cdot$ 3 + 0} = [:, -6, -3, 0, 3, 6, :]\
+[1]$_{3}$ = {b aus Z | es gibt K aus Z mit b = k $\cdot$ 3 + 1} = [:, -5, -2, 1, 4, 7, :]\
+[1]$_{4}$ = {b aus Z | es gibt K aus Z mit b = k $\cdot$ 4 + 1} = [:, -7, -3, 1, 5, 9, :]
 
 d) Gib drei verschiedene Repräsentanten der Restklassen [3]$_{7}$ und [2]$_{8}$ an.\
 [3]$_{7}$ = [:, -11, 3, 10, :]\
@@ -425,37 +415,37 @@ d) Gib drei verschiedene Repräsentanten der Restklassen [3]$_{7}$ und [2]$_{8}$
 e) Kennst Du Anwendungen von Restklassen im täglichen Leben?\
 Mögliche Anwendungen wären die Uhrzeit, Wochentage und Kalender.
 
-###### 1. Zeige, dass für alle Repräsentanten a aus [4]$_{7}$ und b aus [5]$_{7}$ gilt: a+b aus [2]$_{7}$. Benutze dafür, dass sich a und b schreiben lassen als a=7·k1+4 und b=7·k2+5 mit ganzen Zahlen k1 und k2 und ermittle, welchen Rest a+b bei Division durch 7 hat.\
+###### 1. Zeige, dass für alle Repräsentanten a $\in$ [4]$_{7}$ und b $\in$ [5]$_{7}$ gilt: a + b $\in$ [2]$_{7}$. Benutze dafür, dass sich a und b schreiben lassen als a = 7 $\cdot$ k$_{1}$ + 4 und b = 7 $\cdot$ k$_{2}$ + 5 mit ganzen Zahlen k$_{1}$ und k$_{2}$ und ermittle, welchen Rest a + b bei Division durch 7 hat.
 [4]$_{7}$ = [:, -3, 4, 11, :]\
 [5]$_{7}$ = [:, -2, 5, 12, :]\
-Hierfür gilt: (4 + 5) % 7 = 9 % 7 = 2
+Bei der Addition gilt: (4 + 5) % 7 = 9 % 7 = 2\
+Das Ergebnis lautet also: [2]$_{7}$ = [:, -5, 2, 9, :]
 
-[2]$_{7}$ = [:, -5, 2, 9, :]\
-Für a gilt: a = 7 * k1 + 4\
-Für b gilt: b = 7 * k2 + 5\
-Für a + b gilt: a + b = (7 * k1 + 4) + (7 * k2 + 5) = 7 * (k1 + k2) + 9 = 7 * k3 + (9 % 7) = 7 * k3 + 2 mit k3 = k1 + k2
+Für a gilt: a = 7 $\cdot$ k$_{1}$ + 4\
+Für b gilt: b = 7 $\cdot$ k$_{2}$ + 5\
+Für a + b gilt: a + b = (7 $\cdot$ k$_{1}$ + 4) + (7 $\cdot$ k$_{2}$ + 5) = 7 $\cdot$ (k$_{1}$ + k$_{2}$) + 9\
+Unter Betrachtung des Restes bei Division durch 7 ergibt sich: 7 $\cdot$ (k$_{1}$ + k$_{2}$) + 9 % 7 = 7 $\cdot$ (k$_{1}$ + k$_{2}$) + 2\
+Mit k$_{3}$ = k$_{1}$ + k$_{2}$ ergibt sich: 7 $\cdot$ k$_{3}$ + 2\
 Somit entsteht die Restklasse [2]$_{7}$.
 
-###### 2. Zeige, dass für alle Repräsentanten a aus [4]$_{7}$ und b aus [5]$_{7}$ gilt: a·b aus [6]$_{7}$. Benutze dafür, dass sich a und b schreiben lassen als a=7·k1+4 und b=7·k2+5 mit ganzen Zahlen k1 und k2 und ermittle, welchen Rest a·b bei Division durch 7 hat.
+###### 2. Zeige, dass für alle Repräsentanten a $\in$ [4]$_{7}$ und b $\in$ [5]$_{7}$ gilt: a $\cdot$ b $\in$ [6]$_{7}$. Benutze dafür, dass sich a und b schreiben lassen als a = 7 $\cdot$ k$_{1}$ + 4 und b = 7 $\cdot$ k$_{2}$ + 5 mit ganzen Zahlen k$_{1}$ und k$_{2}$ und ermittle, welchen Rest a $\cdot$ b bei Division durch 7 hat.
 [4]$_{7}$ = [:, -3, 4, 11, :]\
 [5]$_{7}$ = [:, -2, 5, 12, :]\
-Hierfür gilt: (4 * 5) % 7 = 20 % 7 = 6
+Bei der Multiplikation gilt: (4 $\cdot$ 5) % 7 = 20 % 7 = 6\
+Das Ergebnis lautet also: [6]$_{7}$ = [:, -1, 6, 13, :]
 
-[6]$_{7}$ = [:, -1, 6, 13, :]\
-Für a gilt: a = 7 * k1 + 4\
-Für b gilt: b = 7 * k2 + 5\
-Für a * b gilt: \
-a * b = (7 * k1 + 4) * (7 * k2 + 5) 
-= 49 * k1 * k2 + 35 * k1 + 28 * k2 + 20\
-= 49 * k3 + 35 * k1 + 28 * k2 + 20 = 7 * (7 * k3 + 5 * k1 + 4 * k2) + 20 | mit k3 = k1 * k2\
-= 7 * k4 + (20 % 7) = 7 * k4 + 6 mit k4 = 7 * k3 + 5 * k1 + 4 * k2
+Für a gilt: a = 7 $\cdot$ k$_{1}$ + 4\
+Für b gilt: b = 7 $\cdot$ k$_{2}$ + 5\
+Für a $\cdot$ b gilt: a $\cdot$ b = (7 $\cdot$ k$_{1}$ + 4) $\cdot$ (7 $\cdot$ k$_{2}$ + 5) = 49 $\cdot$ k$_{1}$ $\cdot$ k$_{2}$ + 35 $\cdot$ k$_{1}$ + 28 $\cdot$ k$_{2}$ + 20\
+Unter Betrachtung des Restes bei Division durch 7 ergibt sich: 49 $\cdot$ k$_{1}$ $\cdot$ k$_{2}$ + 35 $\cdot$ k$_{1}$ + 28 $\cdot$ k$_{2}$ + 20 % 7 = 49 $\cdot$ k$_{1}$ $\cdot$ k$_{2}$ + 35 $\cdot$ k$_{1}$ + 28 $\cdot$ k$_{2}$ + 6\
+Mit k$_{3}$ = 7 $\cdot$ k$_{1}$ $\cdot$ k$_{2}$ + 5 $\cdot$ k$_{1}$ + 4 $\cdot$ k$_{2}$ ergibt sich: 7 $\cdot$ k$_{3}$ + 6\
 Somit entsteht die Restklasse [6]$_{7}$.
 
-3. Leicht darstellen kann man Addition und Multiplikation von Restklassen mit Tabellen. Wenn aus dem Zusammenhang klar ist, welche Restklassen man betrachtet, kann man die Symbole [ ]m auch weglassen.
+3. Leicht darstellen kann man Addition und Multiplikation von Restklassen mit Tabellen. Wenn aus dem Zusammenhang klar ist, welche Restklassen man betrachtet, kann man die Symbole [ ]$_{m}$ auch weglassen.
 
 a) Zeige, dass für die Restklassen modulo 3 folgende Additions- und Multiplikationstabelle gilt:\
-Der Rest n bei der Addition entsteht aus (3 * k1 + n1) + (3 * k2 + n2) | Für n muss somit gelten: n = (n1 + n2) % 3
-Der Rest n bei der Multiplikation entsteht aus (3 * k1 + n1) * (3 * k2 + n2) | Für n muss somit gelten: n = (n1 * n2) % 3
+Der Rest n bei der Addition entsteht aus (3 $\cdot$ k$_{1}$ + n$_{1}$) + (3 $\cdot$ k$_{2}$ + n$_{2}$) | Für n muss somit gelten: n = (n$_{1}$ + n$_{2}$) % 3
+Der Rest n bei der Multiplikation entsteht aus (3 $\cdot$ k$_{1}$ + n$_{1}$) $\cdot$ (3 $\cdot$ k$_{2}$ + n$_{2}$) | Für n muss somit gelten: n = (n$_{1}$ $\cdot$ n$_{2}$) % 3
 
 Additionstabelle:
     """)
@@ -537,39 +527,39 @@ Jetzt kann auch 16 durch -4 ersetzt werden, da sie sich in der selben Restklasse
 Somit: (-4)$^{2}$ $\cdot$ 2 mod 20 = (16 $\cdot$ 2) mod 20 = 32 mod 20 = 12
 
 #### Aufgabe 2:
-a) 8 ** 9 mod 7 = 1 ** 9 mod 7 = 1
+a) 8$^{9}$ mod 7 = 1$^{9}$ mod 7 = 1
 
-b) 6 ** 9 mod 7 = (-1) ** 9 mod 7 = 6
+b) 6$^{9}$ mod 7 = (-1)$^{9}$ mod 7 = 6
 
-c) 54 ** 16 mod 55 = (-1) ** 16 mod 55 = 1
+c) 54$^{16}$ mod 55 = (-1)$^{16}$ mod 55 = 1
 
-d) 3 ** 333 mod 26 = (3 ** 3) ** 100 mod 26\
-    = (3 ** 3 % 26) ** 100 mod 26\
-    = 1 ** 100 mod 26 = 1
+d) 3$^{333}$ mod 26 = (3$^{3}$)$^{100}$ mod 26\
+    = (3$^{3}$ % 26)$^{100}$ mod 26\
+    = 1$^{100}$ mod 26 = 1
 
-e) 2 ** 268 mod 17 = (2 ** 4) ** 67 mod 17\
-    = (2 ** 4 % 17) ** 67 mod 17\
-    = (-1) ** 67 mod 17\
+e) 2$^{268}$ mod 17 = (2$^{4}$)$^{67}$ mod 17\
+    = (2$^{4}$ % 17)$^{67}$ mod 17\
+    = (-1)$^{67}$ mod 17\
     = (-1) % 17 = 16
 
-f) 2 ** 269 mod 17 = (2 ** 268 * 2) mod 17\
-    = (2 ** 268 mod 17 * 2 mod 17) mod 17\
-    = (16 * 2) mod 17 = 15
+f) 2$^{269}$ mod 17 = (2$^{268}$ $\cdot$ 2) mod 17\
+    = (2$^{268}$ mod 17 $\cdot$ 2 mod 17) mod 17\
+    = (16 $\cdot$ 2) mod 17 = 15
 
-g) 2 ** 270 mod 19 = (2 ** 9) ** 30 mod 19\
-    = (2 ** 9 % 19) ** 30 mod 19\
-    = (-1) ** 30 mod 19 = 1
+g) 2$^{27}$0 mod 19 = (2$^{9}$)$^{30}$ mod 19\
+    = (2$^{9}$ % 19)$^{30}$ mod 19\
+    = (-1)$^{30}$ mod 19 = 1
 
-h) 2 ** 271 mod 19 = (2 ** 270 * 2) mod 19\
-    = (2 ** 270 mod 19 * 2 mod 19) mod 19\
-    = (1 * 2) mod 19 = 2
+h) 2$^{271}$ mod 19 = (2$^{270}$ $\cdot$ 2) mod 19\
+    = (2$^{270}$ mod 19 $\cdot$ 2 mod 19) mod 19\
+    = (1 $\cdot$ 2) mod 19 = 2
 
-i) 3 ** 333 mod 15 = (3 * 3 ** 332) mod 15\
-    = (3 * (3 ** 4) ** 83) mod 15\
-    = (3 * 81 ** 83) mod 15\
-    = (3 * 6 ** 83) mod 15\
-    = (3 mod 15 * 6 ** 83 mod 15) mod 15\
-    = 3 * 6 mod 15 = 3 | Weil 6 ** k mod 15 = 6
+i) 3$^{333}$ mod 15 = (3 $\cdot$ 3$^{332}$) mod 15\
+    = (3 $\cdot$ (3$^{4}$)$^{83}$) mod 15\
+    = (3 $\cdot$ 81$^{83}$) mod 15\
+    = (3 $\cdot$ 6$^{83}$) mod 15\
+    = (3 mod 15 $\cdot$ 6$^{83}$ mod 15) mod 15\
+    = 3 $\cdot$ 6 mod 15 = 3 | Weil 6$^{k}$ mod 15 = 6
     """)
 
 with st.expander("4. sym-asym Verschlüsselung"):
@@ -624,20 +614,25 @@ with st.expander("6. RSA auf einen Blick"):
 with st.expander("7. euklidischer Algorithmus"):
     st.write(r"""
 #### Aufgabe 1: Bestimme den Euklidischen Algorithmus für den ggT
-a) 24 und 9\
-24 mod 9 = 6 $\rightarrow$ 9 mod 6 = 3 $\rightarrow$ 6 mod 3 = 0 $\rightarrow$ ggT(24, 9) = 3
+a) ggT: 24 und 9\
+24 mod 9 = 6 $\rightarrow$ 9 mod 6 = 3 $\rightarrow$ 6 mod 3 = 0 $\rightarrow$ ggT(24, 9) = 3\
+Somit ist der größte gemeinsame Teiler von 24 und 9 3.
 
-b) 36 und 18\
-36 mod 18 = 0 $\rightarrow$ ggT(36, 18) = 18
+b) ggT: 36 und 18\
+36 mod 18 = 0 $\rightarrow$ ggT(36, 18) = 18\
+Somit ist der größte gemeinsame Teiler von 36 und 18 18.
 
-c) 75 und 45\
-75 mod 45 = 30 $\rightarrow$ 45 mod 30 = 15 $\rightarrow$ 30 mod 15 = 0 $\rightarrow$ ggT(75, 45) = 15
+c) ggT: 75 und 45\
+75 mod 45 = 30 $\rightarrow$ 45 mod 30 = 15 $\rightarrow$ 30 mod 15 = 0 $\rightarrow$ ggT(75, 45) = 15\
+Somit ist der größte gemeinsame Teiler von 75 und 45 15.
 
-d) 720 und 288\
-720 mod 288 = 144 $\rightarrow$ 288 mod 144 = 0 $\rightarrow$ ggT(720, 288) = 144
+d) ggT: 720 und 288\
+720 mod 288 = 144 $\rightarrow$ 288 mod 144 = 0 $\rightarrow$ ggT(720, 288) = 144\
+Somit ist der größte gemeinsame Teiler von 720 und 288 144.
 
-e) 1071 und 1029\
-1071 mod 1029 = 42 $\rightarrow$ 1029 mod 42 = 21 $\rightarrow$ 42 mod 21 = 0 $\rightarrow$ ggT(1071, 1029) = 21
+e) ggT: 1071 und 1029\
+1071 mod 1029 = 42 $\rightarrow$ 1029 mod 42 = 21 $\rightarrow$ 42 mod 21 = 0 $\rightarrow$ ggT(1071, 1029) = 21\
+Somit ist der größte gemeinsame Teiler von 1071 und 1029 21.
     """)
 
 with st.expander("8. multiplikatives Inverses"):
@@ -660,3 +655,51 @@ Gesucht ist $0 < b < 48 \in \mathbb{Z}$ für das gilt: $(b \cdot 5)$ mod $48 = 1
     Da $b$ jedoch positiv sein muss, wählen wir den nächsten positiven Wert in der Restklasse $[29]_{48}$ (Weil -19 mod 48 = 29), also gilt $b = 29$.\
     Zur Kontrolle: $(29 \cdot 5)$ mod $48 = 1$.
     """)
+
+gen_rsa = rsa_body.button("Generate new keys", key="generate_new_keys")
+
+if 'rsa_p' not in st.session_state or gen_rsa:
+    with rsa_body:
+        with st.spinner('Generating new keys...'):
+            st.session_state['rsa_p'] = generate_prime(0, 10**300, 10**301)
+            st.session_state['rsa_q'] = generate_prime(st.session_state['rsa_p'], 10**300, 10**301)
+            st.session_state['rsa_n'] = st.session_state['rsa_p'] * st.session_state['rsa_q']
+            st.session_state['rsa_phi'] = (st.session_state['rsa_p'] - 1) * (st.session_state['rsa_q'] - 1)
+            st.session_state['rsa_e'] = generate_e(st.session_state['rsa_phi'])
+            st.session_state['rsa_d'] = pow(st.session_state['rsa_e'], -1, st.session_state['rsa_phi']) 
+
+            # rsa_a, rsa_x, rsa_y = xgcd(st.session_state['rsa_e'], st.session_state['rsa_phi'])
+            # if (rsa_x < 0):
+            #     st.session_state['rsa_d'] = rsa_x + st.session_state['rsa_phi']
+            # else:
+            #     st.session_state['rsa_d'] = rsa_x
+
+rsa_body.text(
+f"""
+p: {st.session_state['rsa_p']}
+q: {st.session_state['rsa_q']}
+n: {st.session_state['rsa_n']}
+phi: {st.session_state['rsa_phi']}
+e: {st.session_state['rsa_e']}
+d: {st.session_state['rsa_d']}
+""")
+
+rsa_body.subheader("Encode")
+encode_message_rsa = rsa_body.text_input("Enter message to encode:", key="encode_message_rsa")
+encode_button_rsa = rsa_body.button("Encode", key="encode_button_rsa")
+
+if encode_button_rsa:
+    encode_message_ascii_rsa = [ord(char) for char in encode_message_rsa]
+    encode_message_ascii_rsa = [pow(c, st.session_state['rsa_e'], st.session_state['rsa_n']) for c in encode_message_ascii_rsa]
+    st.success(" ".join([str(c) for c in encode_message_ascii_rsa]))
+
+rsa_body.markdown("---")
+
+rsa_body.subheader("Decode")
+decode_message_rsa = rsa_body.text_input("Enter message to decode:", key="decode_message_rsa")
+decode_button_rsa = rsa_body.button("Decode", key="decode_button_rsa")
+
+if decode_button_rsa:
+    decode_message_ascii_rsa = [int(c) for c in decode_message_rsa.split(" ")]
+    decode_message_ascii_rsa = [pow(c, st.session_state['rsa_d'], st.session_state['rsa_n']) for c in decode_message_ascii_rsa]
+    st.success("".join([chr(c) for c in decode_message_ascii_rsa]))
