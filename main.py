@@ -182,12 +182,13 @@ encode_text_cleaned_vi = encode_text_input_vi.replace(
     'ä', 'ae').replace('Ä', 'Ae').replace('ö', 'oe').replace('Ö', 'Oe').replace(
     'ü', 'ue').replace('Ü', 'Ue').replace('ß', 'ss')
 encode_word_vi = st.text_input("Enter word to use for encoding:")
+encode_word_vi_cleaned = "".join([char for char in ascii_lowercase for char in encode_word_vi.lower() if char in ascii_lowercase])
 endoce_button_vi = st.button("Encode", key="encode_button_vi")
 
 if endoce_button_vi:
     encode_text_vi = ''
     for i, char in enumerate(encode_text_cleaned_vi):
-        encode_index_vi = ascii_lowercase.index(encode_word_vi[i % len(encode_word_vi)]) + 1
+        encode_index_vi = ascii_lowercase.index(encode_word_vi_cleaned[i % len(encode_word_vi_cleaned)]) + 1
 
         if char.isalpha():
             if char.isupper():
