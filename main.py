@@ -6,7 +6,7 @@ import random
 import math
 import numpy as np
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide", page_title="Kryptographie", page_icon="🔐")
 st.title("Caesar-Verschlüsselung")
 st.subheader("Encode")
 encode_text_input = st.text_input("Enter text to encode:")
@@ -689,19 +689,29 @@ d: {st.session_state['rsa_d']}
 rsa_body.subheader("Encode")
 encode_message_rsa = rsa_body.text_input("Enter message to encode:", key="encode_message_rsa")
 encode_button_rsa = rsa_body.button("Encode", key="encode_button_rsa")
+encode_success_rsa = rsa_body.empty()
 
 if encode_button_rsa:
     encode_message_ascii_rsa = [ord(char) for char in encode_message_rsa]
     encode_message_ascii_rsa = [pow(c, st.session_state['rsa_e'], st.session_state['rsa_n']) for c in encode_message_ascii_rsa]
-    st.success(" ".join([str(c) for c in encode_message_ascii_rsa]))
+    encode_success_rsa.success(" ".join([str(c) for c in encode_message_ascii_rsa]))
 
 rsa_body.markdown("---")
 
 rsa_body.subheader("Decode")
 decode_message_rsa = rsa_body.text_input("Enter message to decode:", key="decode_message_rsa")
 decode_button_rsa = rsa_body.button("Decode", key="decode_button_rsa")
+decode_success_rsa = rsa_body.empty()
 
 if decode_button_rsa:
     decode_message_ascii_rsa = [int(c) for c in decode_message_rsa.split(" ")]
     decode_message_ascii_rsa = [pow(c, st.session_state['rsa_d'], st.session_state['rsa_n']) for c in decode_message_ascii_rsa]
-    st.success("".join([chr(c) for c in decode_message_ascii_rsa]))
+    decode_success_rsa.success("".join([chr(c) for c in decode_message_ascii_rsa]))
+
+### link to github
+st.markdown(
+    """
+    <h1>Mein gesamter Code ist auf <a href="https://github.com/foersterrobert/Kryptographie">Github</a> verfügbar. :)<h1>
+    """,
+    unsafe_allow_html=True
+)
