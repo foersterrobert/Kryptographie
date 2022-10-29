@@ -1,4 +1,3 @@
 streamlit
 numpy
 pandas
-libenchant1c2a
