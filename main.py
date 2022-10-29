@@ -271,18 +271,19 @@ st.title("RSA")
 gen_rsa = st.button("Generate new keys", key="generate_new_keys")
 
 if 'rsa_p' not in st.session_state or gen_rsa:
-    st.session_state['rsa_p'] = generate_prime(0, 10**300, 10**301)
-    st.session_state['rsa_q'] = generate_prime(st.session_state['rsa_p'], 10**300, 10**301)
-    st.session_state['rsa_n'] = st.session_state['rsa_p'] * st.session_state['rsa_q']
-    st.session_state['rsa_phi'] = (st.session_state['rsa_p'] - 1) * (st.session_state['rsa_q'] - 1)
-    st.session_state['rsa_e'] = generate_e(st.session_state['rsa_phi'])
-    st.session_state['rsa_d'] = pow(st.session_state['rsa_e'], -1, st.session_state['rsa_phi']) 
+    with st.spinner('Generating new keys...'):
+        st.session_state['rsa_p'] = generate_prime(0, 10**300, 10**301)
+        st.session_state['rsa_q'] = generate_prime(st.session_state['rsa_p'], 10**300, 10**301)
+        st.session_state['rsa_n'] = st.session_state['rsa_p'] * st.session_state['rsa_q']
+        st.session_state['rsa_phi'] = (st.session_state['rsa_p'] - 1) * (st.session_state['rsa_q'] - 1)
+        st.session_state['rsa_e'] = generate_e(st.session_state['rsa_phi'])
+        st.session_state['rsa_d'] = pow(st.session_state['rsa_e'], -1, st.session_state['rsa_phi']) 
 
-    # rsa_a, rsa_x, rsa_y = xgcd(st.session_state['rsa_e'], st.session_state['rsa_phi'])
-    # if (rsa_x < 0):
-    #     st.session_state['rsa_d'] = rsa_x + st.session_state['rsa_phi']
-    # else:
-    #     st.session_state['rsa_d'] = rsa_x
+        # rsa_a, rsa_x, rsa_y = xgcd(st.session_state['rsa_e'], st.session_state['rsa_phi'])
+        # if (rsa_x < 0):
+        #     st.session_state['rsa_d'] = rsa_x + st.session_state['rsa_phi']
+        # else:
+        #     st.session_state['rsa_d'] = rsa_x
 
 st.text(
 f"""
@@ -302,6 +303,8 @@ if encode_button_rsa:
     encode_message_ascii_rsa = [ord(char) for char in encode_message_rsa]
     encode_message_ascii_rsa = [pow(c, st.session_state['rsa_e'], st.session_state['rsa_n']) for c in encode_message_ascii_rsa]
     st.success(" ".join([str(c) for c in encode_message_ascii_rsa]))
+
+st.markdown("---")
 
 st.subheader("Decode")
 decode_message_rsa = st.text_input("Enter message to decode:", key="decode_message_rsa")
@@ -396,7 +399,7 @@ Für die einzelnen Felder gilt: b = k * m + a
 b) Fertige eine entsprechende Tabelle für m = 5 an.
     """)
 
-    st.dataframe(
+    st.table(
         pd.DataFrame(
             data={
                 '[0]5': ['5 * k', ':', '-10', '-5', '0', '5', '10', ':'],
@@ -457,12 +460,12 @@ Der Rest n bei der Multiplikation entsteht aus (3 * k1 + n1) * (3 * k2 + n2) | F
 Additionstabelle:
     """)
 
-    additionTable3a = np.zeros((3, 3))
+    additionTable3a = np.zeros((3, 3), dtype=int)
     for row in range(3):
         for col in range(3):
             additionTable3a[row][col] = (row + col) % 3
 
-    st.dataframe(
+    st.table(
         pd.DataFrame(
             additionTable3a
         )
@@ -472,12 +475,12 @@ Additionstabelle:
 Multiplikationstabelle:
     """)
 
-    multiplikationsTable3a = np.zeros((3, 3))
+    multiplikationsTable3a = np.zeros((3, 3), dtype=int)
     for row in range(3):
         for col in range(3):
             multiplikationsTable3a[row][col] = (row * col) % 3
     
-    st.dataframe(
+    st.table(
         pd.DataFrame(
             multiplikationsTable3a
         )
@@ -489,12 +492,12 @@ b) Ermittle Additions- und Multiplikationstabelle für die Restklassen modulo 6.
 Additionstabelle:
     """)
 
-    additionTable6b = np.zeros((6, 6))
+    additionTable6b = np.zeros((6, 6), dtype=int)
     for row in range(6):
         for col in range(6):
             additionTable6b[row][col] = (row + col) % 6
         
-    st.dataframe(
+    st.table(
         pd.DataFrame(
             additionTable6b
         )
@@ -504,12 +507,12 @@ Additionstabelle:
 Multiplikationstabelle:
     """)
 
-    multiplikationsTable6b = np.zeros((6, 6))
+    multiplikationsTable6b = np.zeros((6, 6), dtype=int)
     for row in range(6):
         for col in range(6):
             multiplikationsTable6b[row][col] = (row * col) % 6
 
-    st.dataframe(
+    st.table(
         pd.DataFrame(
             multiplikationsTable6b
         )
@@ -639,5 +642,21 @@ e) 1071 und 1029\
 
 with st.expander("8. multiplikatives Inverses"):
     st.write(r"""
+#### Aufgabe 2: Finde die multiplikative Inverse von $a$ modulo $m$.
+###### a) die multiplikative Inverse von $a = 15$ modulo $m = 26$
+Gesucht ist $0 < b < 26 \in \mathbb{Z}$ für das gilt: $(b \cdot 15)$ mod $26 = 1$ oder $1 = b \cdot 15 + k \cdot 26$.
+    """)
+    st.image("8.a.png")
+    st.write(r"""
+Somit ist $b = 7$.\
+Zur Kontrolle: $(7 \cdot 15)$ mod $26 = 1$.
 
+###### b) die multiplikative Inverse von $a = 5$ modulo $m = 48$
+Gesucht ist $0 < b < 48 \in \mathbb{Z}$ für das gilt: $(b \cdot 5)$ mod $48 = 1$ oder $1 = b \cdot 5 + k \cdot 48$.
+    """)
+    st.image("8.b.png")
+    st.write(r"""
+    Somit wäre $b = -19$.\
+    Da $b$ jedoch positiv sein muss, wählen wir den nächsten positiven Wert in der Restklasse $[29]_{48}$ (Weil -19 mod 48 = 29), also gilt $b = 29$.\
+    Zur Kontrolle: $(29 \cdot 5)$ mod $48 = 1$.
     """)
