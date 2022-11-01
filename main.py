@@ -27,18 +27,20 @@ if endoce_button:
             'ä', 'ae').replace('Ä', 'Ae').replace('ö', 'oe').replace('Ö', 'Oe').replace(
             'ü', 'ue').replace('Ü', 'Ue').replace('ß', 'ss')
         for char in encode_text_cleaned:
-            if char.isalpha():
+            try:
                 if char.isupper():
                     encode_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) + encode_index) % len(ascii_lowercase)].upper()
                 elif char.islower():
                     encode_text += ascii_lowercase[(ascii_lowercase.index(char) + encode_index) % len(ascii_lowercase)]
-            else:
+                else:
+                    encode_text += char
+            except:
                 encode_text += char
 
     elif caesar_mode == 'Unicode':
         for char in encode_text_input:
             try:
-                encode_text += chr((ord(char) + encode_index) % 1114111)
+                encode_text += chr((ord(char) + encode_index) % 1114112)
             except:
                 encode_text += char
 
@@ -49,7 +51,12 @@ st.markdown('---')
 st.subheader("Decode")
 decode_text_input = st.text_input("Enter text to decode:")
 
-decode_index = st.slider('Index', 0, len(ascii_lowercase) - 1)
+if caesar_mode == 'phonetisches Alphabet (26 Buchstaben)':
+    decode_index = st.slider('Index', 0, len(ascii_lowercase) - 1)
+
+elif caesar_mode == 'Unicode':
+    decode_index = st.slider('Index', 0, 1114111)
+
 decode_button = st.button("Decode")
 dictsolve = st.button("Solve by searching in dictionary")
 charsolve = st.button("Solve by looking at the letter distribution")
@@ -91,14 +98,28 @@ letter_distribution = {
 
 if decode_button:
     decode_text = ''
-    for char in decode_text_input:
-        if char.isalpha():
-            if char.isupper():
-                decode_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - decode_index) % len(ascii_lowercase)].upper()
-            elif char.islower():
-                decode_text += ascii_lowercase[(ascii_lowercase.index(char) - decode_index) % len(ascii_lowercase)]
-        else:
-            decode_text += char
+    if caesar_mode == 'phonetisches Alphabet (26 Buchstaben)':
+        decode_text_cleaned = decode_text_input.replace(
+            'ä', 'ae').replace('Ä', 'Ae').replace('ö', 'oe').replace('Ö', 'Oe').replace(
+            'ü', 'ue').replace('Ü', 'Ue').replace('ß', 'ss')
+        for char in decode_text_cleaned:
+            try:
+                if char.isupper():
+                    decode_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - decode_index) % len(ascii_lowercase)].upper()
+                elif char.islower():
+                    decode_text += ascii_lowercase[(ascii_lowercase.index(char) - decode_index) % len(ascii_lowercase)]
+                else:
+                    decode_text += char
+            except:
+                decode_text += char
+
+    elif caesar_mode == 'Unicode':
+        for char in decode_text_input:
+            try:
+                decode_text += chr((ord(char) - decode_index) % 1114112)
+            except:
+                decode_text += char
+
     st.success(decode_text)
 
 if dictsolve:
@@ -109,7 +130,7 @@ if dictsolve:
             if char.isalpha():
                 if char.isupper():
                     solve_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - i) % len(ascii_lowercase)].upper()
-                if char.islower():
+                elif char.islower():
                     solve_text += ascii_lowercase[(ascii_lowercase.index(char) - i) % len(ascii_lowercase)]
             else:
                 solve_text += char
@@ -148,7 +169,7 @@ if charsolve:
             if char.isalpha():
                 if char.isupper():
                     solve_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - i) % len(ascii_lowercase)].upper()
-                if char.islower():
+                elif char.islower():
                     solve_text += ascii_lowercase[(ascii_lowercase.index(char) - i) % len(ascii_lowercase)]
             else:
                 solve_text += char
