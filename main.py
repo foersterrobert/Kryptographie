@@ -8,24 +8,40 @@ import numpy as np
 
 st.set_page_config(layout="wide")
 st.title("Caesar-Verschlüsselung")
+caesar_mode = st.radio("Mode", ['phonetisches Alphabet (26 Buchstaben)', 'Unicode'])
 st.subheader("Encode")
 encode_text_input = st.text_input("Enter text to encode:")
-encode_text_cleaned = encode_text_input.replace(
-    'ä', 'ae').replace('Ä', 'Ae').replace('ö', 'oe').replace('Ö', 'Oe').replace(
-    'ü', 'ue').replace('Ü', 'Ue').replace('ß', 'ss')
-encode_index = st.slider("Select index to encode:", 0, len(ascii_lowercase) - 1)
+
+if caesar_mode == 'phonetisches Alphabet (26 Buchstaben)':
+    encode_index = st.slider("Select index to encode:", 0, len(ascii_lowercase) - 1)
+
+elif caesar_mode == 'Unicode':
+    encode_index = st.slider("Select index to encode:", 0, 1114111)
+
 endoce_button = st.button("Encode")
 
 if endoce_button:
     encode_text = ''
-    for char in encode_text_cleaned:
-        if char.isalpha():
-            if char.isupper():
-                encode_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) + encode_index) % len(ascii_lowercase)].upper()
-            elif char.islower():
-                encode_text += ascii_lowercase[(ascii_lowercase.index(char) + encode_index) % len(ascii_lowercase)]
-        else:
-            encode_text += char
+    if caesar_mode == 'phonetisches Alphabet (26 Buchstaben)':
+        encode_text_cleaned = encode_text_input.replace(
+            'ä', 'ae').replace('Ä', 'Ae').replace('ö', 'oe').replace('Ö', 'Oe').replace(
+            'ü', 'ue').replace('Ü', 'Ue').replace('ß', 'ss')
+        for char in encode_text_cleaned:
+            if char.isalpha():
+                if char.isupper():
+                    encode_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) + encode_index) % len(ascii_lowercase)].upper()
+                elif char.islower():
+                    encode_text += ascii_lowercase[(ascii_lowercase.index(char) + encode_index) % len(ascii_lowercase)]
+            else:
+                encode_text += char
+
+    elif caesar_mode == 'Unicode':
+        for char in encode_text_input:
+            try:
+                encode_text += chr((ord(char) + encode_index) % 1114111)
+            except:
+                encode_text += char
+
     st.success(encode_text)
 
 st.markdown('---')
