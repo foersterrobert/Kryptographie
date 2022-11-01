@@ -127,12 +127,14 @@ if dictsolve:
     for i in range(len(ascii_lowercase) - 1):
         solve_text = ''
         for char in decode_text_input:
-            if char.isalpha():
+            try:
                 if char.isupper():
                     solve_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - i) % len(ascii_lowercase)].upper()
                 elif char.islower():
                     solve_text += ascii_lowercase[(ascii_lowercase.index(char) - i) % len(ascii_lowercase)]
-            else:
+                else:
+                    solve_text += char
+            except:
                 solve_text += char
 
         solve_words = solve_text.encode("ascii", "ignore").decode().split(' ')
@@ -166,12 +168,14 @@ if charsolve:
     for i in range(len(ascii_lowercase) - 1):
         solve_text = ''
         for char in decode_text_input:
-            if char.isalpha():
+            try:
                 if char.isupper():
                     solve_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - i) % len(ascii_lowercase)].upper()
                 elif char.islower():
                     solve_text += ascii_lowercase[(ascii_lowercase.index(char) - i) % len(ascii_lowercase)]
-            else:
+                else:
+                    solve_text += char
+            except:
                 solve_text += char
         
         solve_text_ascii = solve_text.encode("ascii", "ignore").decode().replace(' ', '')
@@ -227,13 +231,16 @@ if endoce_button_vi:
     for i, char in enumerate(encode_text_cleaned_vi):
         encode_index_vi = ascii_lowercase.index(encode_word_vi_cleaned[i % len(encode_word_vi_cleaned)]) + 1
 
-        if char.isalpha():
+        try:
             if char.isupper():
                 encode_text_vi += ascii_lowercase[(ascii_lowercase.index(char.lower()) + encode_index_vi) % len(ascii_lowercase)].upper()
             elif char.islower():
                 encode_text_vi += ascii_lowercase[(ascii_lowercase.index(char) + encode_index_vi) % len(ascii_lowercase)]
-        else:
+            else:
+                encode_text_vi += char
+        except:
             encode_text_vi += char
+
     st.success(encode_text_vi)
 
 st.markdown('---')
@@ -249,13 +256,16 @@ if decode_button_vi:
     for i, char in enumerate(decode_text_input_vi):
         decode_index_vi = ascii_lowercase.index(decode_word_vi_cleaned[i % len(decode_word_vi_cleaned)]) + 1
 
-        if char.isalpha():
+        try:
             if char.isupper():
                 decode_text_vi += ascii_lowercase[(ascii_lowercase.index(char.lower()) - decode_index_vi) % len(ascii_lowercase)].upper()
             elif char.islower():
                 decode_text_vi += ascii_lowercase[(ascii_lowercase.index(char) - decode_index_vi) % len(ascii_lowercase)]
-        else:
+            else:
+                decode_text_vi += char
+        except:
             decode_text_vi += char
+            
     st.success(decode_text_vi)
 
 with st.expander("Vigenere Code"):
