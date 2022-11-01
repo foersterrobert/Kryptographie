@@ -123,72 +123,78 @@ if decode_button:
     st.success(decode_text)
 
 if dictsolve:
-    solveMap = {}
-    for i in range(len(ascii_lowercase) - 1):
-        solve_text = ''
-        for char in decode_text_input:
-            try:
-                if char.isupper():
-                    solve_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - i) % len(ascii_lowercase)].upper()
-                elif char.islower():
-                    solve_text += ascii_lowercase[(ascii_lowercase.index(char) - i) % len(ascii_lowercase)]
-                else:
+    try:
+        solveMap = {}
+        for i in range(len(ascii_lowercase) - 1):
+            solve_text = ''
+            for char in decode_text_input:
+                try:
+                    if char.isupper():
+                        solve_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - i) % len(ascii_lowercase)].upper()
+                    elif char.islower():
+                        solve_text += ascii_lowercase[(ascii_lowercase.index(char) - i) % len(ascii_lowercase)]
+                    else:
+                        solve_text += char
+                except:
                     solve_text += char
-            except:
-                solve_text += char
 
-        solve_words = solve_text.encode("ascii", "ignore").decode().split(' ')
+            solve_words = solve_text.encode("ascii", "ignore").decode().split(' ')
 
-        for word in solve_words:
-            if d.check(word):
-                solveMap[i] = {'idx': solveMap.get(i, {'idx': 0})['idx'] + 1}
+            for word in solve_words:
+                if d.check(word):
+                    solveMap[i] = {'idx': solveMap.get(i, {'idx': 0})['idx'] + 1}
 
-        if i in solveMap.keys():
-            solveMap[i]['str'] = solve_text
+            if i in solveMap.keys():
+                solveMap[i]['str'] = solve_text
 
-    if len(solveMap) > 0:
+        if len(solveMap) > 0:
+            solveMapKeys = sorted(
+                solveMap.keys(),
+                key=lambda x: solveMap[x]['idx'],
+                reverse=True
+            )
+            for key in solveMapKeys[:5]:
+                st.text(
+                    f'{solveMap[key]["str"]} at index {key}')
+        else:
+            st.text("No solution found")
+    except:
+        st.warning("Not working with Unicode")
+
+if charsolve:
+    try:
+        solveMap = {}
+        for i in range(len(ascii_lowercase) - 1):
+            solve_text = ''
+            for char in decode_text_input:
+                try:
+                    if char.isupper():
+                        solve_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - i) % len(ascii_lowercase)].upper()
+                    elif char.islower():
+                        solve_text += ascii_lowercase[(ascii_lowercase.index(char) - i) % len(ascii_lowercase)]
+                    else:
+                        solve_text += char
+                except:
+                    solve_text += char
+            
+            solve_text_ascii = solve_text.encode("ascii", "ignore").decode().replace(' ', '')
+            solve_text_distribution = {k: 0 for k in ascii_lowercase}
+            for l in solve_text_ascii:
+                if l.lower() in solve_text_distribution.keys():
+                    solve_text_distribution[l.lower()] += 1
+            solve_text_distribution = {k: v / len(solve_text_ascii) * 100 for k, v in solve_text_distribution.items()}
+            solveMap[i] = {'str': solve_text, 'idx': sum([abs(letter_distribution[k] - solve_text_distribution[k]) for k in letter_distribution.keys()])}
+        
         solveMapKeys = sorted(
             solveMap.keys(),
             key=lambda x: solveMap[x]['idx'],
-            reverse=True
+            reverse=False
         )
         for key in solveMapKeys[:5]:
             st.text(
                 f'{solveMap[key]["str"]} at index {key}')
-    else:
-        st.text("No solution found")
-
-if charsolve:
-    solveMap = {}
-    for i in range(len(ascii_lowercase) - 1):
-        solve_text = ''
-        for char in decode_text_input:
-            try:
-                if char.isupper():
-                    solve_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - i) % len(ascii_lowercase)].upper()
-                elif char.islower():
-                    solve_text += ascii_lowercase[(ascii_lowercase.index(char) - i) % len(ascii_lowercase)]
-                else:
-                    solve_text += char
-            except:
-                solve_text += char
-        
-        solve_text_ascii = solve_text.encode("ascii", "ignore").decode().replace(' ', '')
-        solve_text_distribution = {k: 0 for k in ascii_lowercase}
-        for l in solve_text_ascii:
-            if l.lower() in solve_text_distribution.keys():
-                solve_text_distribution[l.lower()] += 1
-        solve_text_distribution = {k: v / len(solve_text_ascii) * 100 for k, v in solve_text_distribution.items()}
-        solveMap[i] = {'str': solve_text, 'idx': sum([abs(letter_distribution[k] - solve_text_distribution[k]) for k in letter_distribution.keys()])}
-    
-    solveMapKeys = sorted(
-        solveMap.keys(),
-        key=lambda x: solveMap[x]['idx'],
-        reverse=False
-    )
-    for key in solveMapKeys[:5]:
-        st.text(
-            f'{solveMap[key]["str"]} at index {key}')
+    except:
+        st.warning("Not working with Unicode")
 
 with st.expander("Caesar Code"):
     st.code("""
