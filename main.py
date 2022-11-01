@@ -8,24 +8,42 @@ import numpy as np
 
 st.set_page_config(layout="wide", page_title="Kryptographie", page_icon="🔐")
 st.title("Caesar-Verschlüsselung")
+caesar_mode = st.radio("Mode", ['phonetisches Alphabet (26 Buchstaben)', 'Unicode'])
 st.subheader("Encode")
 encode_text_input = st.text_input("Enter text to encode:")
-encode_text_cleaned = encode_text_input.replace(
-    'ä', 'ae').replace('Ä', 'Ae').replace('ö', 'oe').replace('Ö', 'Oe').replace(
-    'ü', 'ue').replace('Ü', 'Ue').replace('ß', 'ss')
-encode_index = st.slider("Select index to encode:", 0, len(ascii_lowercase) - 1)
+
+if caesar_mode == 'phonetisches Alphabet (26 Buchstaben)':
+    encode_index = st.slider("Select index to encode:", 0, len(ascii_lowercase) - 1)
+
+elif caesar_mode == 'Unicode':
+    encode_index = st.slider("Select index to encode:", 0, 1114111)
+
 endoce_button = st.button("Encode")
 
 if endoce_button:
     encode_text = ''
-    for char in encode_text_cleaned:
-        if char.isalpha():
-            if char.isupper():
-                encode_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) + encode_index) % len(ascii_lowercase)].upper()
-            elif char.islower():
-                encode_text += ascii_lowercase[(ascii_lowercase.index(char) + encode_index) % len(ascii_lowercase)]
-        else:
-            encode_text += char
+    if caesar_mode == 'phonetisches Alphabet (26 Buchstaben)':
+        encode_text_cleaned = encode_text_input.replace(
+            'ä', 'ae').replace('Ä', 'Ae').replace('ö', 'oe').replace('Ö', 'Oe').replace(
+            'ü', 'ue').replace('Ü', 'Ue').replace('ß', 'ss')
+        for char in encode_text_cleaned:
+            try:
+                if char.isupper():
+                    encode_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) + encode_index) % len(ascii_lowercase)].upper()
+                elif char.islower():
+                    encode_text += ascii_lowercase[(ascii_lowercase.index(char) + encode_index) % len(ascii_lowercase)]
+                else:
+                    encode_text += char
+            except:
+                encode_text += char
+
+    elif caesar_mode == 'Unicode':
+        for char in encode_text_input:
+            try:
+                encode_text += chr((ord(char) + encode_index) % 1114112)
+            except:
+                encode_text += char
+
     st.success(encode_text)
 
 st.markdown('---')
@@ -33,7 +51,12 @@ st.markdown('---')
 st.subheader("Decode")
 decode_text_input = st.text_input("Enter text to decode:")
 
-decode_index = st.slider('Index', 0, len(ascii_lowercase) - 1)
+if caesar_mode == 'phonetisches Alphabet (26 Buchstaben)':
+    decode_index = st.slider('Index', 0, len(ascii_lowercase) - 1)
+
+elif caesar_mode == 'Unicode':
+    decode_index = st.slider('Index', 0, 1114111)
+
 decode_button = st.button("Decode")
 dictsolve = st.button("Solve by searching in dictionary")
 charsolve = st.button("Solve by looking at the letter distribution")
@@ -75,14 +98,28 @@ letter_distribution = {
 
 if decode_button:
     decode_text = ''
-    for char in decode_text_input:
-        if char.isalpha():
-            if char.isupper():
-                decode_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - decode_index) % len(ascii_lowercase)].upper()
-            elif char.islower():
-                decode_text += ascii_lowercase[(ascii_lowercase.index(char) - decode_index) % len(ascii_lowercase)]
-        else:
-            decode_text += char
+    if caesar_mode == 'phonetisches Alphabet (26 Buchstaben)':
+        decode_text_cleaned = decode_text_input.replace(
+            'ä', 'ae').replace('Ä', 'Ae').replace('ö', 'oe').replace('Ö', 'Oe').replace(
+            'ü', 'ue').replace('Ü', 'Ue').replace('ß', 'ss')
+        for char in decode_text_cleaned:
+            try:
+                if char.isupper():
+                    decode_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - decode_index) % len(ascii_lowercase)].upper()
+                elif char.islower():
+                    decode_text += ascii_lowercase[(ascii_lowercase.index(char) - decode_index) % len(ascii_lowercase)]
+                else:
+                    decode_text += char
+            except:
+                decode_text += char
+
+    elif caesar_mode == 'Unicode':
+        for char in decode_text_input:
+            try:
+                decode_text += chr((ord(char) - decode_index) % 1114112)
+            except:
+                decode_text += char
+
     st.success(decode_text)
 
 if dictsolve:
@@ -90,12 +127,14 @@ if dictsolve:
     for i in range(len(ascii_lowercase) - 1):
         solve_text = ''
         for char in decode_text_input:
-            if char.isalpha():
+            try:
                 if char.isupper():
                     solve_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - i) % len(ascii_lowercase)].upper()
-                if char.islower():
+                elif char.islower():
                     solve_text += ascii_lowercase[(ascii_lowercase.index(char) - i) % len(ascii_lowercase)]
-            else:
+                else:
+                    solve_text += char
+            except:
                 solve_text += char
 
         solve_words = solve_text.encode("ascii", "ignore").decode().split(' ')
@@ -124,12 +163,14 @@ if charsolve:
     for i in range(len(ascii_lowercase) - 1):
         solve_text = ''
         for char in decode_text_input:
-            if char.isalpha():
+            try:
                 if char.isupper():
                     solve_text += ascii_lowercase[(ascii_lowercase.index(char.lower()) - i) % len(ascii_lowercase)].upper()
-                if char.islower():
+                elif char.islower():
                     solve_text += ascii_lowercase[(ascii_lowercase.index(char) - i) % len(ascii_lowercase)]
-            else:
+                else:
+                    solve_text += char
+            except:
                 solve_text += char
         
         solve_text_ascii = solve_text.encode("ascii", "ignore").decode().replace(' ', '')
@@ -185,13 +226,16 @@ if endoce_button_vi:
     for i, char in enumerate(encode_text_cleaned_vi):
         encode_index_vi = ascii_lowercase.index(encode_word_vi_cleaned[i % len(encode_word_vi_cleaned)]) + 1
 
-        if char.isalpha():
+        try:
             if char.isupper():
                 encode_text_vi += ascii_lowercase[(ascii_lowercase.index(char.lower()) + encode_index_vi) % len(ascii_lowercase)].upper()
             elif char.islower():
                 encode_text_vi += ascii_lowercase[(ascii_lowercase.index(char) + encode_index_vi) % len(ascii_lowercase)]
-        else:
+            else:
+                encode_text_vi += char
+        except:
             encode_text_vi += char
+
     st.success(encode_text_vi)
 
 st.markdown('---')
@@ -207,13 +251,16 @@ if decode_button_vi:
     for i, char in enumerate(decode_text_input_vi):
         decode_index_vi = ascii_lowercase.index(decode_word_vi_cleaned[i % len(decode_word_vi_cleaned)]) + 1
 
-        if char.isalpha():
+        try:
             if char.isupper():
                 decode_text_vi += ascii_lowercase[(ascii_lowercase.index(char.lower()) - decode_index_vi) % len(ascii_lowercase)].upper()
             elif char.islower():
                 decode_text_vi += ascii_lowercase[(ascii_lowercase.index(char) - decode_index_vi) % len(ascii_lowercase)]
-        else:
+            else:
+                decode_text_vi += char
+        except:
             decode_text_vi += char
+            
     st.success(decode_text_vi)
 
 with st.expander("Vigenere Code"):
