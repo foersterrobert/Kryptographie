@@ -102,12 +102,7 @@ if dictsolve:
 
         for word in solve_words:
             if d.check(word):
-                if i not in solveMap.keys():
-                    solveMap[i] = {
-                        'idx': 1,
-                    }
-                else:
-                    solveMap[i]['idx'] += 1
+                solveMap[i] = {'idx': solveMap.get(i, {'idx': 0})['idx'] + 1}
 
         if i in solveMap.keys():
             solveMap[i]['str'] = solve_text
