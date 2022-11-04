@@ -316,7 +316,7 @@ print(encode_text_vi)
 
 def gcd(a, b):
     """
-    Performs the Euclidean algorithm and returns the gcd of a and b
+    Berechne den größten gemeinsamen Teiler von a und b mit dem Euklidischen Algorithmus.
     """
     if (b == 0):
         return a
@@ -325,8 +325,7 @@ def gcd(a, b):
 
 def xgcd(a, b):
     """
-    Performs the extended Euclidean algorithm
-    Returns the gcd, coefficient of a, and coefficient of b
+    Berechne das multiplikative Inverse von a mod b mit dem erweiterten Euklidischen Algorithmus.
     """
     x, old_x = 0, 1
     y, old_y = 1, 0
@@ -340,6 +339,9 @@ def xgcd(a, b):
     return a, old_x, old_y
 
 def generate_prime(prime, start, end):
+    """
+    Miller-Rabin Primzahltest (aus dem Internet kopiert)
+    """
     while True:
         n = random.randint(start, end)
 
