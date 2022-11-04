@@ -323,10 +323,11 @@ def gcd(a, b):
     else:
         return gcd(b, a % b)
 
-def xgcd(a, b):
+def xgcd(e, phi):
     """
     Berechne das multiplikative Inverse von a mod b mit dem erweiterten Euklidischen Algorithmus.
     """
+    a, b = e, phi
     x, old_x = 0, 1
     y, old_y = 1, 0
 
@@ -336,7 +337,9 @@ def xgcd(a, b):
         old_x, x = x, old_x - quotient * x
         old_y, y = y, old_y - quotient * y
 
-    return a, old_x, old_y
+    if old_x < 0:
+        old_x += phi
+    return old_x
 
 def generate_prime(prime, start, end):
     """
@@ -749,11 +752,9 @@ if 'rsa_p' not in st.session_state or gen_rsa:
             st.session_state['rsa_e'] = generate_e(st.session_state['rsa_phi'])
             st.session_state['rsa_d'] = pow(st.session_state['rsa_e'], -1, st.session_state['rsa_phi']) 
 
-            # rsa_a, rsa_x, rsa_y = xgcd(st.session_state['rsa_e'], st.session_state['rsa_phi'])
-            # if (rsa_x < 0):
-            #     st.session_state['rsa_d'] = rsa_x + st.session_state['rsa_phi']
-            # else:
-            #     st.session_state['rsa_d'] = rsa_x
+            # langsamere eigene Implementierung um das multiplikative Inverse zu berechnen
+            # st.session_state['rsa_d'] = xgcd(st.session_state['rsa_e'], st.session_state['rsa_phi'])
+
 
 rsa_body.text(
 f"""
