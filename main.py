@@ -218,29 +218,44 @@ print(encode_text) # Gib den verschlüsselten Text aus
 """, language="python")
 
 st.title("Vigenere Cipher")
+vigenere_mode = st.radio("Mode", ('phonetisches Alphabet (26 Buchstaben)', 'Unicode'), key='vigenere_mode')
 st.subheader("Encode")
 encode_text_input_vi = st.text_input("Enter text to encode:", key="encode_text_input_vi")
-encode_text_cleaned_vi = encode_text_input_vi.replace(
-    'ä', 'ae').replace('Ä', 'Ae').replace('ö', 'oe').replace('Ö', 'Oe').replace(
-    'ü', 'ue').replace('Ü', 'Ue').replace('ß', 'ss')
 encode_word_vi = st.text_input("Enter word to use for encoding:")
-encode_word_vi_cleaned = "".join([char for char in ascii_lowercase for char in encode_word_vi.lower() if char in ascii_lowercase])
 endoce_button_vi = st.button("Encode", key="encode_button_vi")
 
 if endoce_button_vi:
     encode_text_vi = ''
-    for i, char in enumerate(encode_text_cleaned_vi):
-        encode_index_vi = ascii_lowercase.index(encode_word_vi_cleaned[i % len(encode_word_vi_cleaned)]) + 1
+    if vigenere_mode == 'phonetisches Alphabet (26 Buchstaben)':
+        encode_text_cleaned_vi = encode_text_input_vi.replace(
+            'ä', 'ae').replace('Ä', 'Ae').replace('ö', 'oe').replace('Ö', 'Oe').replace(
+            'ü', 'ue').replace('Ü', 'Ue').replace('ß', 'ss')
+        encode_word_vi_cleaned = "".join([char for char in encode_word_vi.lower() if char in ascii_lowercase])
+        if len(encode_word_vi_cleaned) > 0:
+            for i, char in enumerate(encode_text_cleaned_vi):
+                encode_index_vi = ascii_lowercase.index(encode_word_vi_cleaned[i % len(encode_word_vi_cleaned)]) + 1
+                try:
+                    if char.isupper():
+                        encode_text_vi += ascii_lowercase[(ascii_lowercase.index(char.lower()) + encode_index_vi) % len(ascii_lowercase)].upper()
+                    elif char.islower():
+                        encode_text_vi += ascii_lowercase[(ascii_lowercase.index(char) + encode_index_vi) % len(ascii_lowercase)]
+                    else:
+                        encode_text_vi += char
+                except:
+                    encode_text_vi += char
+        else:
+            encode_text_vi = encode_text_input_vi
 
-        try:
-            if char.isupper():
-                encode_text_vi += ascii_lowercase[(ascii_lowercase.index(char.lower()) + encode_index_vi) % len(ascii_lowercase)].upper()
-            elif char.islower():
-                encode_text_vi += ascii_lowercase[(ascii_lowercase.index(char) + encode_index_vi) % len(ascii_lowercase)]
-            else:
-                encode_text_vi += char
-        except:
-            encode_text_vi += char
+    elif vigenere_mode == 'Unicode':
+        if len(encode_word_vi) > 0:
+            for i, char in enumerate(encode_text_input_vi):
+                encode_index_vi = ord(encode_word_vi[i % len(encode_word_vi)]) + 1
+                try:
+                    encode_text_vi += chr((ord(char) + encode_index_vi) % 1114112)
+                except:
+                    encode_text_vi += char
+        else:
+            encode_text_vi = encode_text_input_vi
 
     st.success(encode_text_vi)
 
@@ -249,23 +264,37 @@ st.markdown('---')
 st.subheader("Decode")
 decode_text_input_vi = st.text_input("Enter text to decode:", key="decode_text_input_vi")
 decode_word_vi = st.text_input("Enter word to use for decoding:")
-decode_word_vi_cleaned = "".join([char for char in ascii_lowercase for char in decode_word_vi.lower() if char in ascii_lowercase])
 decode_button_vi = st.button("Decode", key="decode_button_vi")
 
 if decode_button_vi:
     decode_text_vi = ''
-    for i, char in enumerate(decode_text_input_vi):
-        decode_index_vi = ascii_lowercase.index(decode_word_vi_cleaned[i % len(decode_word_vi_cleaned)]) + 1
+    if vigenere_mode == 'phonetisches Alphabet (26 Buchstaben)':
+        decode_word_vi_cleaned = "".join([char for char in decode_word_vi.lower() if char in ascii_lowercase])
+        if len(decode_word_vi_cleaned) > 0:
+            for i, char in enumerate(decode_text_input_vi):
+                decode_index_vi = ascii_lowercase.index(decode_word_vi_cleaned[i % len(decode_word_vi_cleaned)]) + 1
+                try:
+                    if char.isupper():
+                        decode_text_vi += ascii_lowercase[(ascii_lowercase.index(char.lower()) - decode_index_vi) % len(ascii_lowercase)].upper()
+                    elif char.islower():
+                        decode_text_vi += ascii_lowercase[(ascii_lowercase.index(char) - decode_index_vi) % len(ascii_lowercase)]
+                    else:
+                        decode_text_vi += char
+                except:
+                    decode_text_vi += char
+        else:
+            decode_text_vi = decode_text_input_vi
 
-        try:
-            if char.isupper():
-                decode_text_vi += ascii_lowercase[(ascii_lowercase.index(char.lower()) - decode_index_vi) % len(ascii_lowercase)].upper()
-            elif char.islower():
-                decode_text_vi += ascii_lowercase[(ascii_lowercase.index(char) - decode_index_vi) % len(ascii_lowercase)]
-            else:
-                decode_text_vi += char
-        except:
-            decode_text_vi += char
+    elif vigenere_mode == 'Unicode':
+        if len(decode_word_vi) > 0:
+            for i, char in enumerate(decode_text_input_vi):
+                decode_index_vi = ord(decode_word_vi[i % len(decode_word_vi)]) + 1
+                try:
+                    decode_text_vi += chr((ord(char) - decode_index_vi) % 1114112)
+                except:
+                    decode_text_vi += char
+        else:
+            decode_text_vi = decode_text_input_vi
             
     st.success(decode_text_vi)
 
