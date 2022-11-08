@@ -5,6 +5,7 @@ import enchant
 import random
 import math
 import numpy as np
+# import sympy
 
 st.set_page_config(layout="wide", page_title="Kryptographie", page_icon="🔐")
 st.title("Caesar-Verschlüsselung")
@@ -327,19 +328,16 @@ def xgcd(e, phi):
     """
     Berechne das multiplikative Inverse von a mod b mit dem erweiterten Euklidischen Algorithmus.
     """
-    a, b = e, phi
-    x, old_x = 0, 1
-    y, old_y = 1, 0
-
-    while (b != 0):
-        quotient = a // b
-        a, b = b, a - quotient * b
-        old_x, x = x, old_x - quotient * x
-        old_y, y = y, old_y - quotient * y
-
-    if old_x < 0:
-        old_x += phi
-    return old_x
+    xgcd_table = np.array([[phi, 1, 0], [e, 0, 1]])
+    while xgcd_table[-1, 0] != 1:
+        xgcd_table = np.vstack((
+            xgcd_table, [
+                xgcd_table[-2, 0] % xgcd_table[-1, 0], 
+                xgcd_table[-2, 1] - xgcd_table[-1, 1] * (xgcd_table[-2, 0] // xgcd_table[-1, 0]), 
+                xgcd_table[-2, 2] - xgcd_table[-1, 2] * (xgcd_table[-2, 0] // xgcd_table[-1, 0])
+            ]
+        ))
+    return xgcd_table[-1, 2] % phi
 
 def generate_prime(prime, start, end):
     """
@@ -774,7 +772,7 @@ encode_success_rsa = rsa_body.empty()
 if encode_button_rsa:
     encode_message_ascii_rsa = [ord(char) for char in encode_message_rsa]
     encode_message_ascii_rsa = [pow(c, st.session_state['rsa_e'], st.session_state['rsa_n']) for c in encode_message_ascii_rsa]
-    encode_success_rsa.success(" ".join([str(c) for c in encode_message_ascii_rsa]))
+    encode_success_rsa.code(" ".join([str(c) for c in encode_message_ascii_rsa]))
 
 rsa_body.markdown("---")
 
@@ -788,7 +786,6 @@ if decode_button_rsa:
     decode_message_ascii_rsa = [pow(c, st.session_state['rsa_d'], st.session_state['rsa_n']) for c in decode_message_ascii_rsa]
     decode_success_rsa.success("".join([chr(c) for c in decode_message_ascii_rsa]))
 
-### link to github
 st.markdown(
     """
     <h1>Mein gesamter Code ist auf <a href="https://github.com/foersterrobert/Kryptographie">Github</a> verfügbar. :)<h1>
