@@ -341,43 +341,41 @@ def xgcd(e, phi):
 
 def generate_prime(prime, start, end):
     """
-    Miller-Rabin Primzahltest (aus dem Internet kopiert)
+    Miller-Rabin Primzahltest (Wikipedia)
     """
     while True:
         n = random.randint(start, end)
-
-        if n==0 or n==1 or n==4 or n==6 or n==8 or n==9:
+        if n % 2 == 0:
             continue
-        if n==2 or n==3 or n==5 or n==7 and n!=prime:
+
+        a = random.randint(2, n-2)
+        d = (n-1) >> 2
+        e = 1
+
+        while d & 1 == 0:
+            d >>= 1
+            e += 1
+
+        p, q, = a, a
+
+        while d > 0:
+            q *= q
+            q %= n
+            if d & 1:
+                p *= q
+                p %= n
+            d >>= 1
+
+        if p == 1 or p == n-1 and n!=prime:
             return n
 
-        s = 0
-        d = n-1
-        while d%2==0:
-            d>>=1
-            s+=1
-        assert(2**s * d == n-1)
-    
-        def trial_composite(a):
-            if pow(a, d, n) == 1:
-                return False
-            for i in range(s):
-                if pow(a, 2**i * d, n) == n-1:
-                    return False
-            return True  
-    
-        for i in range(8):
-            no_prime = False
-            a = random.randrange(2, n)
-            if trial_composite(a):
-                no_prime = True
+        for i in range(e-1):
+            p *= p
+            p %= n
+            if p == n-1 and n!=prime:
+                return n
+            if p <= 1:
                 break
-
-        if no_prime:
-            continue
-
-        if n!=prime:
-            return n
 
 def generate_e(phi):
     while True:
