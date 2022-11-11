@@ -5,7 +5,7 @@ import enchant
 import random
 import math
 import numpy as np
-# import sympy
+from sympy import isprime
 
 st.set_page_config(layout="wide", page_title="Kryptographie", page_icon="🔐")
 st.title("Caesar-Verschlüsselung")
@@ -345,37 +345,35 @@ def generate_prime(prime, start, end):
     """
     while True:
         n = random.randint(start, end)
-        if n % 2 == 0:
-            continue
+        if isprime(n):
+            a = random.randint(2, n-2)
+            d = (n-1) >> 2
+            e = 1
 
-        a = random.randint(2, n-2)
-        d = (n-1) >> 2
-        e = 1
+            while d & 1 == 0:
+                d >>= 1
+                e += 1
 
-        while d & 1 == 0:
-            d >>= 1
-            e += 1
+            p, q, = a, a
 
-        p, q, = a, a
+            while d > 0:
+                q *= q
+                q %= n
+                if d & 1:
+                    p *= q
+                    p %= n
+                d >>= 1
 
-        while d > 0:
-            q *= q
-            q %= n
-            if d & 1:
-                p *= q
-                p %= n
-            d >>= 1
-
-        if p == 1 or p == n-1 and n!=prime:
-            return n
-
-        for i in range(e-1):
-            p *= p
-            p %= n
-            if p == n-1 and n!=prime:
+            if p == 1 or p == n-1 and n!=prime:
                 return n
-            if p <= 1:
-                break
+
+            for i in range(e-1):
+                p *= p
+                p %= n
+                if p == n-1 and n!=prime:
+                    return n
+                if p <= 1:
+                    break
 
 def generate_e(phi):
     while True:
