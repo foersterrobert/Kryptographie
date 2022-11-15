@@ -481,17 +481,17 @@ Alternativ lässt sich auch die effizientere $pow(e, -1, phi)$ Funktion verwende
 Um eine Nachricht $m$ zu verschlüsseln, wird die Verschlüsselungsfunktion $c = m^e \pmod{N}$ verwendet.
     """)
     st.code(r"""
-ascii_message = [ord(char) for char in encode_message_rsa]
+ascii_message = [ord(char) for char in message]
 encoded_ascii_message = [pow(m, e, N) for m in ascii_message]
-final_message = " ".join([str(c) for c in encoded_ascii_message])
+encoded_message = " ".join([str(c) for c in encoded_ascii_message])
     """, language="python")
     st.write(r"""
 Um eine Nachricht $c$ zu entschlüsseln, wird die Entschlüsselungsfunktion $m = c^d \pmod{N}$ verwendet.
     """)
     st.code(r"""
-ascii_message = [ord(char) for char in encode_message_rsa]
-encoded_ascii_message = [pow(m, e, N) for m in ascii_message]
-final_message = " ".join([str(c) for c in encoded_ascii_message])
+encoded_ascii_message = [int(c) for c in encoded_message.split(" ")]
+decoded_ascii_message = [pow(c, d, N) for c in encoded_ascii_message]
+message = "".join([chr(c) for c in decode_message_ascii_rsa])
     """, language="python")
     st.write(r"""
 ### Beispiel
@@ -510,7 +510,7 @@ $m = 42$\
 $c = m^e \pmod{N} = 42^7 \pmod{323} = 253$
 
 Entschlüsselung:\
-$m = c^d \pmod{N} = 253^247 \pmod{323} = 42$
+$m = c^d \pmod{N} = 253^{247} \pmod{323} = 42$
     """)
 
 rsa_erklaerung = st.expander("RSA Erklärung")
