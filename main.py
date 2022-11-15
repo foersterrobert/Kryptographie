@@ -345,7 +345,7 @@ def generate_prime(prime, start, end):
     """
     while True:
         n = random.randint(start, end)
-        if isprime(n):
+        if isprime(n) and n != prime:
             a = random.randint(2, n-2)
             d = (n-1) >> 2
             e = 1
@@ -364,13 +364,13 @@ def generate_prime(prime, start, end):
                     p %= n
                 d >>= 1
 
-            if p == 1 or p == n-1 and n!=prime:
+            if p == 1 or p == n-1:
                 return n
 
             for i in range(e-1):
                 p *= p
                 p %= n
-                if p == n-1 and n!=prime:
+                if p == n-1:
                     return n
                 if p <= 1:
                     break
@@ -383,6 +383,137 @@ def generate_e(phi):
 
 st.title("RSA")
 rsa_body = st.container()
+with st.expander("RSA Dokumentation"):
+    st.write(r"""
+Das RSA-Verfahren (Rivest-Shamir-Adleman) ist der häufigst verwendete Vertreter, der asymetrischen Verschlüsselung.
+Die Methode gilt noch heute als sicher, obwohl sie bereits 1977 vorgestellt wurde.
+Der Aufbau besteht demnach aus einem öffentlichen Schlüssel zur Verschlüsselung und einem privaten Schlüssel, der zur Entschlüsselung verwendet wird.
+
+### Schlüsselgenerierung
+Im ersten Schritt müssen die beiden Primzahlen $p$ und $q$ ermittelt werden. Größere Primzahlen machen das Verfahren sicherer, weshalb ich schlussendlich Primzahlen basierend auf zufälligen Zahlen mit 300 Stellen generiere.
+Die bekannteste Methode zur Primzahlgenerierung, die auch für sehr große Zahlen akkurat ist, ist der Miller-Rabin Primzahltest, den ich nach der Wikipedia Erklärung implementiert habe.
+Zur Beschleunigung filtere ich die Zahlen, die überprüft werden anfänglich mit der isprime() Funktion der sympy Bibliothek.
+    """)
+    st.code(r"""
+def generate_prime(prime, start, end):
+    while True:
+        n = random.randint(start, end)
+        if isprime(n) and n != prime:
+            a = random.randint(2, n-2)
+            d = (n-1) >> 2
+            e = 1
+
+            while d & 1 == 0:
+                d >>= 1
+                e += 1
+
+            p, q, = a, a
+
+            while d > 0:
+                q *= q
+                q %= n
+                if d & 1:
+                    p *= q
+                    p %= n
+                d >>= 1
+
+            if p == 1 or p == n-1:
+                return n
+
+            for i in range(e-1):
+                p *= p
+                p %= n
+                if p == n-1:
+                    return n
+                if p <= 1:
+                    break
+
+    """, language="python")
+    st.write(r"""
+Im nächsten Schritt wird der sogenannte RSA-Modul $N$ berechnet für den gilt $N = p \cdot q$.
+Und $\varphi(N)$ also die Eulersche $\varphi$-Funktion von $N$ für die gilt $\varphi(N) = (p-1) \cdot (q-1)$.
+
+Nun kann der Verschlüsselungsexponent $e$ ermittelt werden. Es gilt $1<e<\varphi(N)$. Zusätzlich muss $e$ teilerfremd zu $\varphi(N)$ sein, also gilt $gcd(e, \varphi(n)) = 1$.\
+Der größte gemeinsame Teiler von $e$ und $\varphi(N)$ kann mit dem Euklidischen Algorithmus berechnet werden.
+    """)
+    st.code(r"""
+def gcd(a, b):
+    if (b == 0):
+        return a
+    else:
+        return gcd(b, a % b)
+
+def generate_e(phi):
+    while True:
+        e = random.randint(2, phi - 1)
+        if (gcd(e, phi) == 1):
+            return e
+    """, language="python")
+    st.write(r"""
+Alternativ lässt sich auch die effizientere $math.gcd(e, \varphi(N))$ Funktion verwenden.
+
+###### Der öffentliche Schlüssel ist nun das Zahlenpaar ($N$, $e$).
+
+Für den privaten Schlüssel brauchen wir den Entschlüsselungsexponenten $d$.
+Es gilt $d \cdot e \equiv 1 \pmod{\varphi(N)}$.\
+$d$ ist also das multiplikative Inverse von $e$ bezüglich des Moduls $\varphi(N)$.
+Dies lässt sich mit dem erweiterten Euklidischen Algorithmus ermitteln.
+    """)
+    st.code(r"""
+def xgcd(e, phi):
+    xgcd_table = np.array([[phi, 1, 0], [e, 0, 1]])
+    while xgcd_table[-1, 0] != 1:
+        xgcd_table = np.vstack((
+            xgcd_table, [
+                xgcd_table[-2, 0] % xgcd_table[-1, 0], 
+                xgcd_table[-2, 1] - xgcd_table[-1, 1] * (xgcd_table[-2, 0] // xgcd_table[-1, 0]), 
+                xgcd_table[-2, 2] - xgcd_table[-1, 2] * (xgcd_table[-2, 0] // xgcd_table[-1, 0])
+            ]
+        ))
+    return xgcd_table[-1, 2] % phi
+    """, language="python")
+    st.write(r"""
+Alternativ lässt sich auch die effizientere $pow(e, -1, phi)$ Funktion verwenden.
+
+###### Der private Schlüssel ist nun das Zahlenpaar ($N$, $d$).
+
+### Verschlüsselung und Entschlüsselung
+Um eine Nachricht $m$ zu verschlüsseln, wird die Verschlüsselungsfunktion $c = m^e \pmod{N}$ verwendet.
+    """)
+    st.code(r"""
+ascii_message = [ord(char) for char in encode_message_rsa]
+encoded_ascii_message = [pow(m, e, N) for m in ascii_message]
+final_message = " ".join([str(c) for c in encoded_ascii_message])
+    """, language="python")
+    st.write(r"""
+Um eine Nachricht $c$ zu entschlüsseln, wird die Entschlüsselungsfunktion $m = c^d \pmod{N}$ verwendet.
+    """)
+    st.code(r"""
+ascii_message = [ord(char) for char in encode_message_rsa]
+encoded_ascii_message = [pow(m, e, N) for m in ascii_message]
+final_message = " ".join([str(c) for c in encoded_ascii_message])
+    """, language="python")
+    st.write(r"""
+### Beispiel
+$p = 17$\
+$q = 19$\
+$N = p \cdot q = 17 \cdot 19 = 323$\
+$\varphi(N) = (p-1) \cdot (q-1) = (17-1) \cdot (19-1) = 16 \cdot 18 = 288$\
+$e = 7$ weil $gcd(7, 288) \equiv 1$\
+$d = 247$
+
+Der öffentliche Schlüssel ist nun das Zahlenpaar ($N$, $e$) = ($323$, $7$).\
+Der private Schlüssel ist nun das Zahlenpaar ($N$, $d$) = ($323$, $247$).
+
+Verschlüsselung:\
+$m = 42$\
+$c = m^e \pmod{N} = 42^7 \pmod{323} = 253$
+
+Entschlüsselung:\
+$m = c^d \pmod{N} = 253^247 \pmod{323} = 42$
+    """)
+
+rsa_erklaerung = st.expander("RSA Erklärung")
 
 st.title("Mathe Aufgaben")
 with st.expander("1. Modulo"):
