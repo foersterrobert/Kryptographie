@@ -340,12 +340,12 @@ def xgcd(e, phi):
     return xgcd_table[-1, 2] % phi
 
 def MillerRabin(n):
+    a = random.randint(2, n - 2)
     d = n - 1
     j = 0
     while d % 2 == 0:
         d //= 2
         j += 1
-    a = random.randint(2, n - 2)
     x = pow(a, d, n)
     if x == 1 or x == n - 1:
         return True
@@ -364,7 +364,8 @@ def generate_prime(prime, start, end):
             for i in range(12):
                 if not MillerRabin(n):
                     break
-            return n
+            else:
+                return n
 
 def generate_e(phi):
     while True:
@@ -386,20 +387,30 @@ Die bekannteste Methode zur Primzahlgenerierung, die auch für sehr große Zahle
 
 Zur Erklärung soll für die ungerade Zahl $n$ überprüft werden, ob sie eine Primzahl ist.\
 Dazu wird eine zufällige Zahl $a$ gewählt, für die gilt $2 \leq a \leq n-2$.\
-Dann berechnet man $d$ und $j$ so, dass $n - 1 = d \cdot 2^j$ mit $d$ ungerade ist.\
-Nun werden die Bedingungen $a^d \equiv 1 \pmod{n}$ und $a^{d\cdot2^r} \equiv -1 \pmod{n}$ für $r$ mit $0 \leq r \leq j-1$ überprüft.\
+Dann berechnet man $d$ und $j$ so, dass gilt: $n - 1 = d \cdot 2^j$. Somit ist $j$ also die Anzahl der möglichen Divisionen von $n - 1$ durch 2, bis der Teil von $n - 1$ ungerade ist, $d$ ist nun der schlussendliche ungerade Teil von $n - 1$, den man nicht mehr einfach halbieren kann.\
+Falls nun eine der Bedingungen $a^d \equiv 1 \pmod{n}$ oder $a^{d\cdot2^r} \equiv -1 \pmod{n}$ für $r$ mit $0 \leq r \leq j-1$ zutrifft, so handelt es sich vermutlich um eine Primzahl.\
 Da dieser Test stochastisch ist, kann es sein, dass $n$ mit einer kleinen Wahrscheinlichkeit fälschlicherweise als Primzahl erkannt wird. Deshalb führe ich den Test mehrmals durch.
 Zur Beschleunigung filtere ich die Zahlen, die überprüft werden anfänglich mit der $isprime()$ Funktion der sympy Bibliothek.
     """)
     st.code(r"""
 def MillerRabin(n):
-    d = n - 1
+    # Erzeuge für a eine zufällige Zahl zwischen 2 und n - 2
+    a = random.randint(2, n - 2) 
+    
+    # Lege Startwerte für d und j fest
+    d = n - 1 
     j = 0
+
+    # Teile n - 1 so lange durch 2, bis die Zahl ungerade ist
+    # j ist nun die Anzahl der Divisionen; 
+    # d ist nun der ungerade Schlussendliche Teil von n - 1;
     while d % 2 == 0:
         d //= 2
         j += 1
-    a = random.randint(2, n - 2)
+
     x = pow(a, d, n)
+
+    # Falls eine der Bedingungen zutrifft, ist n wahrscheinlich eine Primzahl
     if x == 1 or x == n - 1:
         return True
     for i in range(j - 1):
@@ -417,7 +428,8 @@ def generate_prime(prime, start, end):
             for i in range(12):
                 if not MillerRabin(n):
                     break
-            return n
+            else:
+                return n
     """, language="python")
     st.write(r"""
 Im nächsten Schritt wird der sogenannte RSA-Modul $N$ berechnet für den gilt $N = p \cdot q$.
