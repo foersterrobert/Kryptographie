@@ -455,7 +455,7 @@ Alternativ lässt sich auch die effizientere $math.gcd(e, \varphi(N))$ Funktion 
 ###### Der öffentliche Schlüssel ist nun das Zahlenpaar ($N$, $e$).
 
 Für den privaten Schlüssel brauchen wir den Entschlüsselungsexponenten $d$.
-Es gilt $d \cdot e \equiv 1 \pmod{\varphi(N)}$.\
+Es gilt $(e \cdot d) \: mod \: \varphi(N) = 1$.\
 $d$ ist also das multiplikative Inverse von $e$ bezüglich des Moduls $\varphi(N)$.
 Dies lässt sich mit dem erweiterten Euklidischen Algorithmus ermitteln.
     """)
@@ -486,7 +486,7 @@ encoded_ascii_message = [pow(m, e, N) for m in ascii_message]
 encoded_message = " ".join([str(c) for c in encoded_ascii_message])
     """, language="python")
     st.write(r"""
-Um eine Nachricht $c$ zu entschlüsseln, wird die Entschlüsselungsfunktion $m = c^d \pmod{N}$ verwendet.
+Um eine verschlüsselte Nachricht $c$ zu entschlüsseln, wird die Entschlüsselungsfunktion $m = c^d \pmod{N}$ verwendet.
     """)
     st.code(r"""
 encoded_ascii_message = [int(c) for c in encoded_message.split(" ")]
@@ -500,7 +500,7 @@ $q = 19$\
 $N = p \cdot q = 17 \cdot 19 = 323$\
 $\varphi(N) = (p-1) \cdot (q-1) = (17-1) \cdot (19-1) = 16 \cdot 18 = 288$\
 $e = 7$ weil $gcd(7, 288) \equiv 1$\
-$d = 247$
+$d = 247$ weil $(7 \cdot 247) \: mod \: 288 = 1$\
 
 Der öffentliche Schlüssel ist nun das Zahlenpaar ($N$, $e$) = ($323$, $7$).\
 Der private Schlüssel ist nun das Zahlenpaar ($N$, $d$) = ($323$, $247$).
