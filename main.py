@@ -339,41 +339,32 @@ def xgcd(e, phi):
         ))
     return xgcd_table[-1, 2] % phi
 
+def MillerRabin(n):
+    d = n - 1
+    j = 0
+    while d % 2 == 0:
+        d //= 2
+        j += 1
+    a = random.randint(2, n - 2)
+    x = pow(a, d, n)
+    if x == 1 or x == n - 1:
+        return True
+    for i in range(j - 1):
+        x = pow(x, 2, n)
+        if x == n - 1:
+            return True
+        if x == 1:
+            return False
+    return False
+
 def generate_prime(prime, start, end):
-    """
-    Miller-Rabin Primzahltest (Wikipedia)
-    """
     while True:
         n = random.randint(start, end)
         if isprime(n) and n != prime:
-            a = random.randint(2, n-2)
-            d = (n-1) >> 2
-            e = 1
-
-            while d & 1 == 0:
-                d >>= 1
-                e += 1
-
-            p, q, = a, a
-
-            while d > 0:
-                q *= q
-                q %= n
-                if d & 1:
-                    p *= q
-                    p %= n
-                d >>= 1
-
-            if p == 1 or p == n-1:
-                return n
-
-            for i in range(e-1):
-                p *= p
-                p %= n
-                if p == n-1:
-                    return n
-                if p <= 1:
+            for i in range(12):
+                if not MillerRabin(n):
                     break
+            return n
 
 def generate_e(phi):
     while True:
@@ -391,43 +382,42 @@ Der Aufbau besteht demnach aus einem öffentlichen Schlüssel zur Verschlüsselu
 
 ### Schlüsselgenerierung
 Im ersten Schritt müssen die beiden Primzahlen $p$ und $q$ ermittelt werden. Größere Primzahlen machen das Verfahren sicherer, weshalb ich schlussendlich Primzahlen basierend auf zufälligen Zahlen mit 300 Stellen generiere.
-Die bekannteste Methode zur Primzahlgenerierung, die auch für sehr große Zahlen akkurat ist, ist der Miller-Rabin Primzahltest, den ich nach der Wikipedia Erklärung implementiert habe.
-Zur Beschleunigung filtere ich die Zahlen, die überprüft werden anfänglich mit der isprime() Funktion der sympy Bibliothek.
+Die bekannteste Methode zur Primzahlgenerierung, die auch für sehr große Zahlen nutzbar ist, ist der Miller-Rabin Primzahltest.
+
+Zur Erklärung soll für die ungerade Zahl $n$ überprüft werden, ob sie eine Primzahl ist.\
+Dazu wird eine zufällige Zahl $a$ gewählt, für die gilt $2 \leq a \leq n-2$.\
+Dann berechnet man $d$ und $j$ so, dass $n - 1 = d \cdot 2^j$ mit $d$ ungerade ist.\
+Nun werden die Bedingungen $a^d \equiv 1 \pmod{n}$ und $a^{d\cdot2^r} \equiv -1 \pmod{n}$ für $r$ mit $0 \leq r \leq j-1$ überprüft.\
+Da dieser Test stochastisch ist, kann es sein, dass $n$ mit einer kleinen Wahrscheinlichkeit fälschlicherweise als Primzahl erkannt wird. Deshalb führe ich den Test mehrmals durch.
+Zur Beschleunigung filtere ich die Zahlen, die überprüft werden anfänglich mit der $isprime()$ Funktion der sympy Bibliothek.
     """)
     st.code(r"""
+def MillerRabin(n):
+    d = n - 1
+    j = 0
+    while d % 2 == 0:
+        d //= 2
+        j += 1
+    a = random.randint(2, n - 2)
+    x = pow(a, d, n)
+    if x == 1 or x == n - 1:
+        return True
+    for i in range(j - 1):
+        x = pow(x, 2, n)
+        if x == n - 1:
+            return True
+        if x == 1:
+            return False
+    return False
+
 def generate_prime(prime, start, end):
     while True:
         n = random.randint(start, end)
         if isprime(n) and n != prime:
-            a = random.randint(2, n-2)
-            d = (n-1) >> 2
-            e = 1
-
-            while d & 1 == 0:
-                d >>= 1
-                e += 1
-
-            p, q, = a, a
-
-            while d > 0:
-                q *= q
-                q %= n
-                if d & 1:
-                    p *= q
-                    p %= n
-                d >>= 1
-
-            if p == 1 or p == n-1:
-                return n
-
-            for i in range(e-1):
-                p *= p
-                p %= n
-                if p == n-1:
-                    return n
-                if p <= 1:
+            for i in range(12):
+                if not MillerRabin(n):
                     break
-
+            return n
     """, language="python")
     st.write(r"""
 Im nächsten Schritt wird der sogenannte RSA-Modul $N$ berechnet für den gilt $N = p \cdot q$.
@@ -500,7 +490,7 @@ $q = 19$\
 $N = p \cdot q = 17 \cdot 19 = 323$\
 $\varphi(N) = (p-1) \cdot (q-1) = (17-1) \cdot (19-1) = 16 \cdot 18 = 288$\
 $e = 7$ weil $gcd(7, 288) \equiv 1$\
-$d = 247$ weil $(7 \cdot 247) \: mod \: 288 = 1$\
+$d = 247$ weil $(7 \cdot 247) \: mod \: 288 = 1$
 
 Der öffentliche Schlüssel ist nun das Zahlenpaar ($N$, $e$) = ($323$, $7$).\
 Der private Schlüssel ist nun das Zahlenpaar ($N$, $d$) = ($323$, $247$).
